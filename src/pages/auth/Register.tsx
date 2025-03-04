@@ -116,13 +116,13 @@ const Register = () => {
           {/* Username */}
           <div className="mt-4">
             <label htmlFor="username" className="text-[#27173E] text-xs">Username</label>
-            <input type="text" className="registerInputStyle" id="username" name="username" onChange={(e)=>setFormState((prevState)=>({...prevState, username : e.target.value}))} value={formState.username} placeholder="Last Name" />
+            <input type="text" className="registerInputStyle" id="username" name="username" onChange={(e)=>setFormState((prevState)=>({...prevState, username : e.target.value}))} value={formState.username} placeholder="User Name" />
           </div>
 
           {/* Password */}
           <div className="mt-4">
             <label htmlFor="password" className="text-[#27173E] text-xs">Password</label>
-            <input type="password" className="registerInputStyle" id="password" name="password" onChange={(e)=>setFormState((prevState)=>({...prevState, password : e.target.value}))} value={formState.password} placeholder="Last Name" />
+            <input type="password" className="registerInputStyle" id="password" name="password" onChange={(e)=>setFormState((prevState)=>({...prevState, password : e.target.value}))} value={formState.password} placeholder="Password" />
           </div>
 
           <div className='mt-4'>
