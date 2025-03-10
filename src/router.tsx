@@ -113,7 +113,7 @@ const router = createBrowserRouter([
         path: "account", element: <AccountIndex />
     },
     {
-        path: "auth", element: <><Navbar />
+        path: "auth", element: <>
             <TitleUpdater />
             <Outlet />
             
@@ -121,7 +121,6 @@ const router = createBrowserRouter([
         children: [
             { path: "login", element: <Login /> },
             { path: "register", element: <Register /> },
-            { path: "dashboard", element: <Dashboard /> },
         ]
     },
     {
