@@ -1,12 +1,36 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import Select from "react-select";
 import countryList from "react-select-country-list";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { CheckmarkCircleOutline } from 'react-ionicons'
+import { CheckmarkCircleOutline,  CloseCircleOutline } from 'react-ionicons'
 import UserNavbar from './UserNavbar'
 import img from '../../assets/avatar1.png'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+
 const UserProfile = () => {
+
+  const [user, setUser] = useState({});
+  const navigate = useNavigate()
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/getUser", { withCredentials: true })
+      .then((response) => {
+        if (response) {
+          const User = response.data.user;
+          setUser(User);
+        } else {
+          console.log("user not found");
+          navigate("/auth/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/auth/login");
+      });
+  }, []);
+
   const options = useMemo(() => countryList().getData(), []);
   const nigeria = options.find(country => country.label === 'Nigeria');
   const [selectedCountry, setSelectedCountry] = useState(nigeria);
@@ -42,19 +66,19 @@ const UserProfile = () => {
   };
   const userDetails: { details: string, value: string }[] = [
     {
-      details: "Full Name", value: "John Doe"
+      details: "Full Name", value: user.name
     },
     {
-      details: "Account Number", value: "687751162"
+      details: "Account Number", value: user.acc_num
     },
     {
-      details: "Phone Number", value: "+2348123456789"
+      details: "Phone Number", value: user.phone
     },
     {
-      details: "Email Address", value: "xyz@gmail.com"
+      details: "Email Address", value: user.email
     },
     {
-      details: "Country", value: "Nigeria"
+      details: "Country", value: user.country
     },
     {
       details: "Occupation", value: "johndoe"
@@ -83,11 +107,20 @@ const UserProfile = () => {
           ))}
           <div className='df-jsb-ac text-[#27173E]  text-base border-b border-[#958d9e] py-3'>
             <p>Registered</p>
+            { user && user.activated ? 
             <p className='flex'>
               <span className='text-sm flex gap-1 text-[#a855f7]'>
                 verified  <CheckmarkCircleOutline color={"#a855f7"} /></span>
               <FontAwesomeIcon icon={faChevronRight} className='pl-2 text-[#958d9e]' />
-            </p>
+            </p> 
+            : 
+            <p className='flex'>
+            <span className='text-sm flex gap-1 text-[#a855f7]'>
+              Not verified  <CloseCircleOutline color={"#a855f7"} /></span>
+            <FontAwesomeIcon icon={faChevronRight} className='pl-2 text-[#958d9e]' />
+          </p> 
+            
+            }
           </div>
           <div className="dfAc pt-2 pb-4">
 

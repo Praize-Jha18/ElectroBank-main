@@ -1,12 +1,14 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useMemo } from "react";
-import { Form, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import countryList from "react-select-country-list";
 import customSelectStyles from "../useronly/customStyle";
+import axios from 'axios'
 
 const Register = () => {
+  const [message, setMessage] = useState("")
   type optionType = { value: string, label: string }[];
 
   const options = useMemo(() => countryList().getData(), []);
@@ -66,22 +68,27 @@ const Register = () => {
     { value: 'other', label: 'Other' },
   ];
 
+  const navigate = useNavigate();
   // =============================== HANDLING THE SUBMIT AND SENDING FORM DETAILS TO THE SIGNUP POST URL
   const handleSubmit = async (e : React.FormEvent)=>{
     console.log("Form data:", formState);
     e.preventDefault();
-    const response = await fetch('http://localhost:3000/signup', {
-      method : "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formState),
-    })
+    try {
+      const response = await axios.post("http://localhost:3000/signup", formState, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials : true
+      });
 
-    const data = await response.json();
-    if (response.ok) {
-      window.location.href = "http://localhost:5173/";
-    } else {
-      console.error(data.error);
-    }
+      if (response.status === 201) {
+          navigate("/account");
+      } else {
+          console.error(response.data.error);
+          setMessage(response.data.error);
+      }
+  } catch (error: any) {
+      console.error(error);
+      setMessage(error.response?.data?.error || "Something went wrong");
+  }
   }
 
 
@@ -97,32 +104,32 @@ const Register = () => {
           <FontAwesomeIcon icon={faUser} className="text-[#27173E] h-8" />
         </Link>
       </div>
-
+      <h1>{message}</h1>
       <div className="body bg-slate-100 font-poppins pt-24 pb-10">
         <h1 className="text-[#27173E] text-3xl text-center font-semibold">Register Now</h1>
         <form className="px-4" method="post" onSubmit={handleSubmit}>
           {/* First Name */}
           <div className="mt-4">
             <label htmlFor="firstName" className="text-[#27173E] text-xs">First Name</label>
-            <input type="text" className="registerInputStyle" id="firstName" name="firstName" onChange={(e)=>setFormState((prevState) => ({...prevState,firstName: e.target.value}))} value={formState.firstName} placeholder="First Name" />
+            <input type="text" className="registerInputStyle" id="firstName" name="firstName" onChange={(e)=>setFormState((prevState) => ({...prevState,firstName: e.target.value}))} value={formState.firstName} required placeholder="First Name" />
           </div>
 
           {/* Last Name */}
           <div className="mt-4">
             <label htmlFor="lastName" className="text-[#27173E] text-xs">Last Name</label>
-            <input type="text" className="registerInputStyle" id="lastName" name="lastName" onChange={(e)=>setFormState((prevState)=>({...prevState, lastName : e.target.value}))} value={formState.lastName} placeholder="Last Name" />
+            <input type="text" className="registerInputStyle" id="lastName" name="lastName" required onChange={(e)=>setFormState((prevState)=>({...prevState, lastName : e.target.value}))} value={formState.lastName} placeholder="Last Name" />
           </div>
 
           {/* Username */}
           <div className="mt-4">
             <label htmlFor="username" className="text-[#27173E] text-xs">Username</label>
-            <input type="text" className="registerInputStyle" id="username" name="username" onChange={(e)=>setFormState((prevState)=>({...prevState, username : e.target.value}))} value={formState.username} placeholder="User Name" />
+            <input type="text" className="registerInputStyle" id="username" name="username" required onChange={(e)=>setFormState((prevState)=>({...prevState, username : e.target.value}))} value={formState.username} placeholder="User Name" />
           </div>
 
           {/* Password */}
           <div className="mt-4">
             <label htmlFor="password" className="text-[#27173E] text-xs">Password</label>
-            <input type="password" className="registerInputStyle" id="password" name="password" onChange={(e)=>setFormState((prevState)=>({...prevState, password : e.target.value}))} value={formState.password} placeholder="Password" />
+            <input type="password" className="registerInputStyle" id="password" name="password" required onChange={(e)=>setFormState((prevState)=>({...prevState, password : e.target.value}))} value={formState.password} placeholder="Password" />
           </div>
 
           <div className='mt-4'>
@@ -131,15 +138,15 @@ const Register = () => {
           </div>
           <div className='mt-4'>
             <label htmlFor="phoneNumber" className='text-[#27173E] text-xs'>Phone Number</label>
-            <input type="tel" className='registerInputStyle' id="phoneNumber" onChange={(e)=>setFormState((prevState)=>({...prevState, phoneNumber : e.target.value}))} value={formState.phoneNumber} placeholder='080 123 456 789' />
+            <input type="tel" className='registerInputStyle' id="phoneNumber"  onChange={(e)=>setFormState((prevState)=>({...prevState, phoneNumber : e.target.value}))} value={formState.phoneNumber} placeholder='080 123 456 789' />
           </div>
           <div className='mt-4'>
             <label htmlFor="email" className='text-[#27173E] text-xs'>Email</label>
-            <input type="email" className='registerInputStyle' onChange={(e)=>setFormState((prevState)=>({...prevState, email : e.target.value}))} value={formState.email}  id="email" placeholder='xyz@gmail.com' />
+            <input type="email" className='registerInputStyle' required onChange={(e)=>setFormState((prevState)=>({...prevState, email : e.target.value}))} value={formState.email}  id="email" placeholder='xyz@gmail.com' />
           </div>
           <div className='mt-4'>
             <label htmlFor="DOB" className='text-[#27173E] text-xs'>Date Of Birth</label>
-            <input type="date" className='registerInputStyle ' onChange={(e)=>setFormState((prevState)=>({...prevState, dob : e.target.value}))} value={formState.dob} id="DOB" /></div>
+            <input type="date" className='registerInputStyle ' required onChange={(e)=>setFormState((prevState)=>({...prevState, dob : e.target.value}))} value={formState.dob} id="DOB" /></div>
 
           {/* Marital Status */}
           <div className="mt-4">
@@ -163,7 +170,7 @@ const Register = () => {
             />
           </div>      <div className='mt-4'>
             <label htmlFor="address" className='text-[#27173E] text-xs'>Address</label>
-            <input type="text" name="address" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-6 text-base outline-none' id="address" onChange={(e)=>setFormState((prevState) => ({...prevState, address: e.target.value}))} value={formState.address} placeholder='House or Office Address' />
+            <input type="text" name="address" required className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-6 text-base outline-none' id="address" onChange={(e)=>setFormState((prevState) => ({...prevState, address: e.target.value}))} value={formState.address} placeholder='House or Office Address' />
           </div>
           <div className='mt-4'>
             <label htmlFor="Select Country" className='text-[#27173E] text-xs'>Account Type</label>

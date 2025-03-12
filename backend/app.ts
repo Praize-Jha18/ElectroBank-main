@@ -6,12 +6,17 @@ import cookieParser from "cookie-parser";
 import flash from "connect-flash";
 import session from "express-session";
 import authRoute from "./auth/routes/auth"
-import key from '../backend/auth/controllers/token'
+import key from './auth/controllers/token'
 
 const app = express();
 
 //=============================== MIDDLEWARE
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow frontend requests
+    credentials: true, // Allow cookies if needed
+  })
+);
 app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -37,12 +42,11 @@ mongoose.connect(dbiUri)
 
 //=============================== STATIC PAGES LOADER
 app.use(express.static(path.join(__dirname, "../dist")));
-
 //=============================== ROUTES PAGES LOADED
 app.use(authRoute)
 
 //=============================== STATIC PAGES
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
