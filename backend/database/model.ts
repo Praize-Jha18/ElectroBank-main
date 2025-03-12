@@ -14,6 +14,7 @@ interface IUser extends Document {
   account_currency: string;
   account_type: string;
   email: string;
+  occupation : string;
   gender: string;
   marital_status: string;
   phone: string;
@@ -41,6 +42,7 @@ const userSchema = new Schema<IUser>({
   account_currency: { type: String, required: true },
   account_type: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  occupation : {type : String},
   gender: { type: String, required: true },
   marital_status: { type: String, required: true },
   phone: { type: String, required: true },

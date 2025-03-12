@@ -30,7 +30,7 @@ const calculateAge = (dob: string): number => {
 };
 // ======================== SIGNUP SERVER
 const signup = async (req: Request, res: Response): Promise<void> =>{
-    const {firstName, lastName, username, address, password, email, phoneNumber, dob, selectedCountry,  selectedCurrency, selectedMaritalStatus, selectedGender, selectedAccountType} = req.body
+    const {firstName, lastName, occupation , username, address, password, email, phoneNumber, dob, selectedCountry,  selectedCurrency, selectedMaritalStatus, selectedGender, selectedAccountType} = req.body
     try{
          // Ensure user doesn't already exist
          const existingUser = await User.findOne({ email});
@@ -49,6 +49,7 @@ const signup = async (req: Request, res: Response): Promise<void> =>{
             account_currency: selectedCurrency?.value, 
             account_type: selectedAccountType?.value, 
             email: email,
+            occupation : occupation,
             gender: selectedGender?.value, 
             marital_status: selectedMaritalStatus?.value, 
             phone: phoneNumber,
