@@ -8,7 +8,6 @@ import Footer from './components/footer/Footer';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ChatraComponent from './ChatraComponent';
-import Dashboard from './pages/auth/DashBoard';
 
 
 const About = lazy(() => import('./pages/About'));
