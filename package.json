@@ -1,12 +1,11 @@
 {
   "name": "elitecity",
   "private": true,
+
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "client": "npm start --prefix client",
-    "server": "nodemon backend/app.ts",
-    "dev": "concurrently \"npm run server\"",
+   "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
