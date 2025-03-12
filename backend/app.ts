@@ -39,7 +39,7 @@ app.use(
   ); 
 
 //=============================== DATABASE CONFIG
-const dbiUri = 'mongodb+srv://praisejahfrancis:peejay@peejaycluster.ccu0cf5.mongodb.net/?retryWrites=true&w=majority&appName=peejaycluster'
+const dbiUri = 'mongodb+srv://praisejahfrancis:peejay@peejaycluster.ccu0cf5.mongodb.net/EliteOceanicSavings?retryWrites=true&w=majority&appName=peejaycluster'
 mongoose.connect(dbiUri)
   .then(()=>{
     app.listen(3000, ()=>console.log("App running on port 3000"))

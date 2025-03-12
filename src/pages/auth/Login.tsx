@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from'axios';
+import { toast, ToastContainer , Id} from 'react-toastify';
 
 
 const Login = () => {
@@ -12,28 +13,38 @@ const Login = () => {
   const navigate = useNavigate();
   const handleSubmit = async (e : React.FormEvent)=>{
     e.preventDefault();
-    try{
+    try {
       const response = await axios.post("http://localhost:3000/login", Form, {
         headers: { "Content-Type": "application/json" },
-        withCredentials : true
-    });
-
-    if (response.status === 201) {
+        withCredentials: true,
+      });
+    
+      if (response.status === 201) {
         navigate("/account");
-    } else {
-        console.error(response.data.error);
-        setMessage(response.data.error);
+      }
+    } catch (error: any) {
+      
+      if (error.response) {
+        // Handle backend error message
+        console.error(error.response.data.error);
+        setMessage(error.response.data.error);
+        toast.error(error.response.data.error);
+      } else {
+        // Handle network or unexpected errors
+        console.error(error.message);
+        setMessage(error.message);
+        toast.error(error.message);
+      }
     }
-    }catch (error: any){
-      setMessage(error.message)
-      setMessage("")
-    }
+    
 
     
   }
   return (
 
     <>
+    
+    <ToastContainer />
       <div className="w-full bg-slate-100 font-poppins dfAc h-screen">
         <form className='shadow-[0_0_8px_rgba(0,0,0,.1)] bg-white  font-poppins rounded-xl' onSubmit={handleSubmit}>
           <p className='text-xl text-sky-500 text-center pt-4 '>Login</p>

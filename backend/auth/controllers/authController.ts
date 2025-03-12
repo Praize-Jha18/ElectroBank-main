@@ -10,8 +10,8 @@ const createToken = (id : string) =>{
     return jwt.sign({id},  key, { expiresIn : maxAge})
 }
 // ======================== CREATING ACCOUNT NUMBER 
-const Acc_no = ()=>{
-    return "12" + Math.floor(Math.random() * 100000000).toString().padStart(8, "0");
+const Acc_no = (value: number )=>{
+    return "12" + Math.floor(Math.random() * 100000000).toString().padStart(value, "0");
 }
 
 // ======================== CALCULATE AGE FUNCTION
@@ -53,8 +53,8 @@ const signup = async (req: Request, res: Response): Promise<void> =>{
             gender: selectedGender?.value, 
             marital_status: selectedMaritalStatus?.value, 
             phone: phoneNumber,
-            current_balance : 0,
-            acc_num: Acc_no(), 
+            current_balance :Acc_no(6) ,
+            acc_num: Acc_no(8), 
             activated: true,
         })
 
