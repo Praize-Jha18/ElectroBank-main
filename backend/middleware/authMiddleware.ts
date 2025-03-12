@@ -8,10 +8,8 @@ import jwt from 'jsonwebtoken'
 import key from '../auth/controllers/token'
 
 const verifyUser = async (req : Request, res : Response, next : NextFunction): Promise<void> =>{
-    console.log("Cookies received:", req.cookies);
     const token = req.cookies.jwt
     if(token){
-        console.log("Token found:", token);
         jwt.verify(token, key, async (err : any, decodedToken: any)=>{
             if(err){
                 console.log(err)
@@ -20,10 +18,12 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
             }else{
                 console.log("Decoded Token:", decodedToken);
                 const user = await User.findById(decodedToken.id);
+                // const userID = decodedToken.id
                 if (!user) {
                     res.status(404).json({ error: "User not found" });
                 } else {
                     res.json({ user });
+                    next()
                 }
             }
         })
@@ -33,4 +33,26 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
     }
 }
 
-export default verifyUser;
+const requireAuth = (req : Request, res : Response, next : NextFunction) => {
+    const token = req.cookies.jwt;
+    if(token){
+        jwt.verify(token, key, async (err : any, decodedToken: any)=>{
+            if(err){
+                console.log(err)
+                res.json({error : "Invalid Token"})
+                next()
+            }else{
+                const userID = decodedToken.id
+                res.locals.user = userID
+                next()
+    }})}
+    else{
+        console.log("User not authenticated")
+        res.json({err : "user not authenticated", redirect : '/'})
+        next();
+    }
+}
+
+const authMiddleware = { verifyUser, requireAuth };
+
+export default authMiddleware;
