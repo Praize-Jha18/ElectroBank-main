@@ -23,6 +23,22 @@ import { faBars, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import { TitleUpdater } from "../../reusables/TitleUpdater";
 import axios from "axios";
 
+  // ======== LOGOUT FUNCTION
+  const logout = async ()=>{
+    try {
+      const response = await axios.get("http://localhost:3000/logout", {
+        withCredentials: true, // Ensure cookies are included
+      });
+  
+      if (response.status === 201) {
+        toast.success("Logout successful"); // Show a toast message
+        window.location.assign("/")
+      }
+    } catch (error) {
+      toast.error("Logout failed, please try again.");
+      console.error("Logout error:", error);
+    }
+  }
 const topLinks = [
   {
     to: "/account/domestic-transfer",
@@ -121,7 +137,7 @@ const links = [
   },
 ];
 
-const drawerLinks: { text: string; link: string; icon: React.JSX.Element }[] = [
+const drawerLinks: { text: string; link?: string; icon: React.JSX.Element }[] = [
   {
     text: "Dashboard",
     link: "./",
@@ -196,11 +212,12 @@ const drawerLinks: { text: string; link: string; icon: React.JSX.Element }[] = [
   },
   {
     text: "Log out",
-    link: "./logout",
     icon: (
+      <div onClick={logout} className="cursor-pointer">
       <LogOutOutline
         style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
       />
+    </div>
     ),
   },
 ];
@@ -242,6 +259,8 @@ const AccountIndex = () => {
         navigate("/auth/login");
       });
   }, []);
+
+
   const Transaction = (props: { transactions: string }) => {
     return (
       <div className="px-4">

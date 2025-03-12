@@ -48,6 +48,7 @@ const Login = () => {
       <div className="w-full bg-slate-100 font-poppins dfAc h-screen">
         <form className='shadow-[0_0_8px_rgba(0,0,0,.1)] bg-white  font-poppins rounded-xl' onSubmit={handleSubmit}>
           <p className='text-xl text-sky-500 text-center pt-4 '>Login</p>
+          <h1 className="text-[20px]">{message}</h1>
           <div className="px-4">
             <div className='mt-4'>
               <label htmlFor="email" className='text-[#27173E] text-xs'>Email</label>
@@ -62,7 +63,7 @@ const Login = () => {
               <Link to={"/auth/login"} className="text-[#958d9e] text-base">Forgot Password?</Link>
             </div>
           </div>
-          <h1 className="text-[10px]">{message}</h1>
+         
 
           <div className="px-4  py-6">
             <button className='btn  text-lg h-14 w-full'>Login</button>

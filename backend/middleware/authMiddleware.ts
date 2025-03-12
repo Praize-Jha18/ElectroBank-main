@@ -16,9 +16,7 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
                 res.json({error : "Invalid Token"})
                 next()
             }else{
-                console.log("Decoded Token:", decodedToken);
                 const user = await User.findById(decodedToken.id);
-                // const userID = decodedToken.id
                 if (!user) {
                     res.status(404).json({ error: "User not found" });
                 } else {

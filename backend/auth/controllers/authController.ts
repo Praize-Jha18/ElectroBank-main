@@ -86,4 +86,13 @@ const login = async (req : Request, res: Response): Promise<void> =>{
         res.status(500).json({err});
     }
 }
-export default {signup, login}
+
+const logout = (req :  Request, res : Response)=>{
+    const isCookie = req.cookies.jwt
+    console.log(isCookie)
+    if(isCookie){
+        res.cookie('jwt', ' ', {maxAge : 1})
+    }
+    res.status(201).json({message : "logout successful"})
+}
+export default {signup, login, logout}
