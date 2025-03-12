@@ -1,13 +1,15 @@
 {
-    "compilerOptions": {
-      "target": "ES6",
-      "module": "CommonJS",
-      "outDir": "./dist",
-      "strict": true,
-      "esModuleInterop": true
-    },
-    "include": ["app.ts"],
-    "exclude": ["node_modules", "dist"]
- 
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./",       // Specifies the root directory for your source files
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,     // Skips type-checking of library files (optional)
+    "moduleResolution": "node" // Ensures Node.js-style module resolution
+  },
+  "include": ["./**/*.ts"],    // Includes all files in the `src` folder
+  "exclude": ["node_modules", "dist"]
 }
   
