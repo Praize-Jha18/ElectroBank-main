@@ -8,6 +8,7 @@ import UserNavbar from './UserNavbar'
 import img from '../../assets/avatar1.png'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer , Id} from 'react-toastify';
 
 const UserProfile = () => {
 
@@ -24,15 +25,26 @@ interface User {
   activated: boolean;
 }
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>();
   const navigate = useNavigate()
+
+  
+
   useEffect(() => {
+
+  
+      const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
+
+    
+
     axios
       .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
       .then((response) => {
         if (response) {
           const User = response.data.user;
           setUser(User);
+          toast.dismiss(toastId);
+
         } else {
           console.log("user not found");
           navigate("/auth/login");
@@ -81,19 +93,19 @@ interface User {
   };
   const userDetails: { details: string, value: string }[] = [
     {
-      details: "Full Name", value: user!.name
+      details: "Full Name", value: user ? user.name : "Please wait..."
     },
     {
-      details: "Account Number", value: user!.acc_num
+      details: "Account Number", value:user ? user.acc_num : "Please wait..."
     },
     {
-      details: "Phone Number", value: user!.phone
+      details: "Phone Number", value:user ? user!.phone : "Please wait..."
     },
     {
-      details: "Email Address", value: user!.email
+      details: "Email Address", value:user ? user!.email: "Please wait..."
     },
     {
-      details: "Country", value: user!.country
+      details: "Country", value: user ? user!.country: "Please wait..."
     },
     {
       details: "Occupation", value: "johndoe"
@@ -104,6 +116,7 @@ interface User {
   return (
     <>
       <UserNavbar header={'Profile'} />
+      <ToastContainer />
 
       <div className="body bg-slate-100 font-poppins pt-24 pb-24 px-6">
         <div className=' dfAc'>

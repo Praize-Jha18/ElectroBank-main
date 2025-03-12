@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import UserFooter from "./UserFooter";
+import { toast, ToastContainer , Id} from 'react-toastify';
 import {
   ArrowDownOutline,
   ArrowUpOutline,
@@ -222,13 +223,14 @@ const AccountIndex = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
     axios
       .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
       .then((response) => {
         if (response) {
           const User = response.data.user;
           console.log(User);
-          setUser(User);
+          setUser(User); toast.dismiss(toastId);
         } else {
           console.log("user not found");
           navigate("/auth/login");
@@ -262,6 +264,7 @@ const AccountIndex = () => {
   return (
     <>
       <TitleUpdater />
+      <ToastContainer />
       <div className="bg-sky-500 df-jsb-ac  h-16 px-8 fixed w-full font-poppins">
         <FontAwesomeIcon
           icon={faBars}
@@ -333,7 +336,7 @@ const AccountIndex = () => {
           <div className="details   mx-4 px-4 pt-4 bg-white rounded-tl-xl rounded-tr-xl">
             <div className="df-jsb-ac">
               <div className="text-[#27173E]">
-                <p className="text-base">{user ? user.name : ""}</p>
+                <p className="text-base">{user ? user.name : "Fetching info"}</p>
                 <h1 className="text-3xl font-semibold pt-1 pb-3">{user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : "" }</h1>
                 <p className="text-sm">Ledger Balance: {user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : "" }</p>
               </div>
