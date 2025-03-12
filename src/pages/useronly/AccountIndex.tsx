@@ -218,6 +218,7 @@ const AccountIndex = () => {
     activated: boolean;
     current_balance: string;
     account_currency: string;
+    account_type: string;
   }
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -336,11 +337,12 @@ const AccountIndex = () => {
           <div className="details   mx-4 px-4 pt-4 bg-white rounded-tl-xl rounded-tr-xl">
             <div className="df-jsb-ac">
               <div className="text-[#27173E]">
-                <p className="text-base">{user ? user.name : "Fetching info"}</p>
-                <h1 className="text-3xl font-semibold pt-1 pb-3">{user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : "" }</h1>
-                <p className="text-sm">Ledger Balance: {user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : "" }</p>
+                <p className="text-base">{user ? user.name : "Fetching Name"}</p>
+                <h1 className="text-3xl font-semibold pt-1 pb-3">{user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : `${user != null? `$ ${user.current_balance}` : 'Loading balance'}` }</h1>
+                <p className="text-sm">Ledger Balance: {user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : `${user != null? `$ ${user.current_balance}` : 'Loading Ledger balance'}` }</p>
               </div>
-              <p>1</p>
+              <p>Acct Type: {user && user.account_type ?  user.account_type : 'Loading type'}</p>
+          
             </div>
             <div className="border-b border-gray-300 py-2"></div>
           </div>

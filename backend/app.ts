@@ -1,9 +1,15 @@
 import express from "express";
+
 import mongoose from "mongoose";
+
 import cors from "cors";
+
 import path from "path";
+
 import cookieParser from "cookie-parser";
+
 import flash from "connect-flash";
+
 import session from "express-session";
 import authRoute from "./auth/routes/auth"
 import key from './auth/controllers/token'
