@@ -11,11 +11,24 @@ import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
 
-  const [user, setUser] = useState({});
+
+
+  // Define a type for the user
+interface User {
+  name: string;
+  acc_num: string;
+  phone: string;
+  email: string;
+  country: string;
+  occupation: string;
+  activated: boolean;
+}
+
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate()
   useEffect(() => {
     axios
-      .get("http://localhost:3000/getUser", { withCredentials: true })
+      .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
       .then((response) => {
         if (response) {
           const User = response.data.user;
@@ -37,6 +50,8 @@ const UserProfile = () => {
   const countryChangeHandler = (selectedOption: any) => {
     setSelectedCountry(selectedOption);
   };
+
+
   const customSelectStyles = {
     control: (provided: any) => ({
       ...provided,
@@ -66,19 +81,19 @@ const UserProfile = () => {
   };
   const userDetails: { details: string, value: string }[] = [
     {
-      details: "Full Name", value: user.name
+      details: "Full Name", value: user!.name
     },
     {
-      details: "Account Number", value: user.acc_num
+      details: "Account Number", value: user!.acc_num
     },
     {
-      details: "Phone Number", value: user.phone
+      details: "Phone Number", value: user!.phone
     },
     {
-      details: "Email Address", value: user.email
+      details: "Email Address", value: user!.email
     },
     {
-      details: "Country", value: user.country
+      details: "Country", value: user!.country
     },
     {
       details: "Occupation", value: "johndoe"

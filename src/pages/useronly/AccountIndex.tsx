@@ -205,12 +205,25 @@ const drawerLinks: { text: string; link: string; icon: React.JSX.Element }[] = [
 ];
 
 const AccountIndex = () => {
+
+
+  interface User {
+    name: string;
+    acc_num: string;
+    phone: string;
+    email: string;
+    country: string;
+    occupation: string;
+    activated: boolean;
+    current_balance: string;
+    account_currency: string;
+  }
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/getUser", { withCredentials: true })
+      .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
       .then((response) => {
         if (response) {
           const User = response.data.user;
