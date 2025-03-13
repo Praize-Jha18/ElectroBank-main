@@ -12,8 +12,8 @@ const BankTransfer = () => {
     const handleFormChange = (e : any)=>{
         const name = e.target.name
         const value = e.target.value
-
-        setForm((values)=>({...values, [name] : value,}))
+        
+        setForm((values)=>({...values, [name] : value}))
     }
     const handleSubmit = (e : React.FormEvent)=>{
         e.preventDefault();
