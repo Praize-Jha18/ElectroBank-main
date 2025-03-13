@@ -23,12 +23,34 @@ interface IUser extends Document {
   acc_num: string;
   activated: boolean;
   last_login?: Date;
+  transactions: Transaction[];
+}
+
+interface Transaction {
+  amount: number;
+  beneficiary_name : string;
+  beneficiary_acc_num : number;
+  beneficiary_acc_type : string;
+  type: "credit" | "debit";
+  status: "pending" | "completed" | "failed";
+  reference: string;
+  createdAt: Date;
 }
 
 // Define an interface for the Model that includes statics
 interface IUserModel extends Model<IUser> {
   login(email: string, password: string): Promise<IUser>;
 }
+const TransactionSchema = new Schema<Transaction>({
+  amount: { type: Number, required: true },
+  type: { type: String, enum: ["credit", "debit"], required: true },
+  beneficiary_name : {type : String, required : true},
+  beneficiary_acc_num : {type : Number, required : true, unique: true},
+  beneficiary_acc_type : {type : String, required : true},
+  status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
+  reference: { type: String, required: true, unique: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
 // Define the user schema
 const userSchema = new Schema<IUser>({
@@ -50,7 +72,8 @@ const userSchema = new Schema<IUser>({
   profile_photo: { type: String, default: "" },
   acc_num: { type: String, required: true, unique: true },
   activated: { type: Boolean, default: false },
-  last_login: { type: Date }
+  last_login: { type: Date },
+  transactions: [TransactionSchema],
 });
 
 // =================== HASHING PASSWORDS WITH MONGOOSE HOOKS

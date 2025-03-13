@@ -1,36 +1,59 @@
 import  { useState } from 'react'
 import UserNavbar from './UserNavbar'
+import axios from 'axios';
 
 const BankTransfer = () => {
     const [selectedAccountType, setSelectedAccountType] = useState('');
+    const [form, setForm] = useState({})
 
     const handleAccountTypeChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedAccountType(event.target.value);
     };
+    const handleFormChange = (e : any)=>{
+        const name = e.target.name
+        const value = e.target.value
+
+        setForm((values)=>({...values, [name] : value,}))
+    }
+    const handleSubmit = (e : React.FormEvent)=>{
+        e.preventDefault();
+        try{
+            axios.post("http://localhost:3000/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
+            .then((response)=>{
+                console.log(response.data)
+            }).catch((err)=>{
+                console.log(err)
+            }) 
+        }catch(err){
+            console.log(err)
+        }
+        
+    }
+    
     return (
         <>
             <UserNavbar header={'Bank Transfer'} />
-            <div className="body pt-32 pb-36 font-poppins bg-slate-100 h-full">
+                <div className="body pt-32 pb-36 font-poppins bg-slate-100 h-full">
                 <h1 className='text-[#27173E] text-center text-3xl font-semibold pb-2'>Send Money</h1>
                 <h3 className='text-[#27173E] text-center text-base font-medium pb-3'>Fill the form carefully</h3>
 
-                <form className='px-4 '>
+                <form className='px-4' onSubmit={handleSubmit}>
 
                     <div className='mt-4 '>
-                        <label htmlFor="amount" className='text-[#27173E] text-xs'>Amount $</label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="amount" placeholder='e.g 345678' />
+                        <label htmlFor="amount" className='text-[#27173E] text-xs'>Amount ($)</label>
+                        <input type="number" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="amount" placeholder='e.g 345678' name="amount" onChange={handleFormChange}  value={form.amount || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="accountName" className='text-[#27173E] text-xs'>Beneficiary Account Name </label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountName" placeholder='Beneficiary Account Name' />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountName" placeholder='Beneficiary Account Name' name='beneficiary_name' onChange={handleFormChange} value={form.beneficiary_name || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="accountNumber" className='text-[#27173E] text-xs'>Beneficiary Account Number</label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountNumber" placeholder='Beneficiary Account Number' />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountNumber" placeholder='Beneficiary Account Number' name='beneficiary_acc_num' onChange={handleFormChange} value={form.beneficiary_acc_num || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="description" className='text-[#27173E] text-xs'>Description</label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' id="description" placeholder='Description' />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' id="description" placeholder='Description' name='reference' onChange={handleFormChange} value={form.reference || ""} />
                     </div>
                     <div className="mt-4">
                         <label htmlFor="accountType" className='text-stone-500 '>Account Type

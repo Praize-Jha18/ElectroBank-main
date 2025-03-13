@@ -21,6 +21,8 @@ const Login = () => {
     
       if (response.status === 201) {
         navigate("/account");
+      }else{
+        setMessage(response.data.message);
       }
     } catch (error: any) {
       
@@ -48,9 +50,10 @@ const Login = () => {
       <div className="w-full bg-slate-100 font-poppins dfAc h-screen">
         <form className='shadow-[0_0_8px_rgba(0,0,0,.1)] bg-white  font-poppins rounded-xl' onSubmit={handleSubmit}>
           <p className='text-xl text-sky-500 text-center pt-4 '>Login</p>
-          <h1 className="text-[20px]">{message}</h1>
+         
           <div className="px-4">
             <div className='mt-4'>
+            <h1 className="text-[20px]">{message}</h1>
               <label htmlFor="email" className='text-[#27173E] text-xs'>Email</label>
               <input type="email" className='w-full block text-black mt-1 placeholder:text-stone-500 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' onChange={(e)=>setForm((prevState)=>({...prevState, email : e.target.value}))} value={Form.email} id="email" placeholder='xyz@gmail.com' />
             </div>
