@@ -11,8 +11,17 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer, Id } from "react-toastify";
 
 const UserProfile = () => {
+
+  interface UserUpdated {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    country: string;
+    occupation: string;
+  }
   // Creating state to store profile changes
-  const [profileChange, setProfileChange] = useState({});
+  const [profileChange, setProfileChange] = useState<UserUpdated>({} as UserUpdated);
   const [message, setMessage] = useState("")
 
   const handleChange = (e: any) => {
@@ -23,7 +32,7 @@ const UserProfile = () => {
   };
   const submitForm = async () => {
     await axios
-      .post("http://localhost:3000/editprofile", profileChange, {
+      .post<UserUpdated>("http://localhost:3000/editprofile", profileChange, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -52,6 +61,8 @@ const UserProfile = () => {
     occupation: string;
     activated: boolean;
   }
+
+  
 
   const [user, setUser] = useState<User>();
   const navigate = useNavigate();
