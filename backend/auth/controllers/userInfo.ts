@@ -1,7 +1,10 @@
-import User from '../../database/model'
 import {Response , Request} from 'express'
 import bcrypt from "bcrypt";
+
 import { error } from 'console';
+import models from '../../database/model'
+
+const { User } = models;
 
 const editProfile = async  (req : Request, res : Response) =>{
     const {lastName, firstName, occupation, phone, email} = req.body

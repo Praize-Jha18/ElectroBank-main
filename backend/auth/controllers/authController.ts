@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import key from './token'
 import jwt from 'jsonwebtoken'
-import User from '../../database/model'
+import models from '../../database/model'
 
-
+const { User } = models;
 // ======================== CREATING JWT TOKEN
 const maxAge = (60 * 60)
 const createToken = (id : string) =>{
@@ -53,6 +53,7 @@ const signup = async (req: Request, res: Response): Promise<void> =>{
             gender: selectedGender?.value, 
             marital_status: selectedMaritalStatus?.value, 
             phone: phoneNumber,
+            
             current_balance :Acc_no(6) ,
             acc_num: Acc_no(8), 
             activated: true,

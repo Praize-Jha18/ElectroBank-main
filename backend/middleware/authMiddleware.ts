@@ -3,10 +3,12 @@
 The user is sent to the res.json() method and axios retrives the response and gets it, then store it in a state.
 */
 import { Request, Response, NextFunction } from 'express'
-import User from '../database/model'
+
 import jwt from 'jsonwebtoken'
 import key from '../auth/controllers/token'
+import models from '../database/model'
 
+const { User } = models;
 const verifyUser = async (req : Request, res : Response, next : NextFunction): Promise<void> =>{
     const token = req.cookies.jwt
     if(token){
