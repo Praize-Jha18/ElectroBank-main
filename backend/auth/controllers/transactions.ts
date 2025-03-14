@@ -11,7 +11,7 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
         if(!user){
             res.status(404).json({ error: "User not found" });
         }else{
-            const beneficiary = await User.findOne({beneficiary_acc_num})
+            const beneficiary = await User.findOne({acc_num : beneficiary_acc_num})
             if(!beneficiary){
                 res.status(500).json({error : "Account not found"})
             }
@@ -33,7 +33,7 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
                 createdAt: new Date(), 
             });
             // Add to beneficiary (only if found)
-        if (beneficiary && beneficiary.name === beneficiary_name) {
+        if (beneficiary) {
             beneficiary.current_balance += amount;
             beneficiary.transactions.push({
                 amount,
@@ -50,6 +50,7 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
         }
 
         await user.save();
+        res.status(201).json({success : "Transfer successful"})
         }
        
     }catch(err){

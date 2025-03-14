@@ -1,10 +1,15 @@
-import  { useState } from 'react'
+import  { useState, useEffect } from 'react'
 import UserNavbar from './UserNavbar'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer , Id} from 'react-toastify';
 
 const BankTransfer = () => {
     const [selectedAccountType, setSelectedAccountType] = useState('');
     const [form, setForm] = useState({})
+    const [message, setMessage] = useState("")
+
+    const navigate = useNavigate();
 
     const handleAccountTypeChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedAccountType(event.target.value);
@@ -18,42 +23,79 @@ const BankTransfer = () => {
     const handleSubmit = (e : React.FormEvent)=>{
         e.preventDefault();
         try{
+            if(selectedAccountType == ''){
+                console.log("Please add the beneficiary's account type")
+                setMessage("Please add the beneficiary's account type")
+            }
             axios.post("http://localhost:3000/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
             .then((response)=>{
                 console.log(response.data)
+                if(response.status == 201){
+                    setMessage(response.data.success)
+                }else{
+                    console.log(response.data.error)
+                    setMessage(response.data.error)
+                }
             }).catch((err)=>{
-                console.log(err)
+                // console.log(err)
             }) 
         }catch(err){
             console.log(err)
         }
         
     }
+
+
+    interface User {
+        name: string;
+        email: string;
+    }
+    useEffect(() => {
+        const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
+        axios
+          .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
+          .then((response) => {
+            if (response) {
+            const User = response.data.user;
+              console.log(User);
+              toast.dismiss(toastId);
+            } else {
+              console.log("User not found");
+              navigate("/auth/login");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            navigate("/auth/login");
+          });
+      }, []);
     
     return (
         <>
             <UserNavbar header={'Bank Transfer'} />
+            <ToastContainer />
                 <div className="body pt-32 pb-36 font-poppins bg-slate-100 h-full">
                 <h1 className='text-[#27173E] text-center text-3xl font-semibold pb-2'>Send Money</h1>
+                <h1 className='text-center'>{message}</h1>
                 <h3 className='text-[#27173E] text-center text-base font-medium pb-3'>Fill the form carefully</h3>
 
                 <form className='px-4' onSubmit={handleSubmit}>
 
                     <div className='mt-4 '>
                         <label htmlFor="amount" className='text-[#27173E] text-xs'>Amount ($)</label>
-                        <input type="number" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="amount" placeholder='e.g 345678' name="amount" onChange={handleFormChange}  value={form.amount || ""} />
+                        <input type="number" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="amount" placeholder='e.g 345678' name="amount" required onChange={handleFormChange}  value={form.amount || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="accountName" className='text-[#27173E] text-xs'>Beneficiary Account Name </label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountName" placeholder='Beneficiary Account Name' name='beneficiary_name' onChange={handleFormChange} value={form.beneficiary_name || ""} />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountName" placeholder='Beneficiary Account Name' required  name='beneficiary_name' onChange={handleFormChange} value={form.beneficiary_name || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="accountNumber" className='text-[#27173E] text-xs'>Beneficiary Account Number</label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountNumber" placeholder='Beneficiary Account Number' name='beneficiary_acc_num' onChange={handleFormChange} value={form.beneficiary_acc_num || ""} />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountNumber" placeholder='Beneficiary Account Number' required  name='beneficiary_acc_num' onChange={handleFormChange} value={form.beneficiary_acc_num || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="description" className='text-[#27173E] text-xs'>Description</label>
-                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' id="description" placeholder='Description' name='reference' onChange={handleFormChange} value={form.reference || ""} />
+                        <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' id="description" placeholder='Description' name='reference' required  onChange={handleFormChange} value={form.reference || ""} />
                     </div>
                     <div className="mt-4">
                         <label htmlFor="accountType" className='text-stone-500 '>Account Type

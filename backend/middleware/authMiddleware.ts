@@ -20,7 +20,7 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
                 if (!user) {
                     res.status(404).json({ error: "User not found" });
                 } else {
-                    res.json({ user });
+                    res.status(200).json({ user });
                     next()
                 }
             }
@@ -37,7 +37,7 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
         jwt.verify(token, key, async (err : any, decodedToken: any)=>{
             if(err){
                 console.log(err)
-                res.json({error : "Invalid Token"})
+                res.status(401).json({error : "Invalid Token"})
                 next()
             }else{
                 const userID = decodedToken.id
@@ -46,7 +46,7 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
     }})}
     else{
         console.log("User not authenticated")
-        res.json({err : "user not authenticated", redirect : '/'})
+        res.status(500).json({err : "user not authenticated", redirect : '/'})
         next();
     }
 }

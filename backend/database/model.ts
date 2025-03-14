@@ -45,10 +45,10 @@ const TransactionSchema = new Schema<Transaction>({
   amount: { type: Number, required: true },
   type: { type: String, enum: ["credit", "debit"], required: true },
   beneficiary_name : {type : String, required : true},
-  beneficiary_acc_num : {type : Number, required : true, unique: true},
+  beneficiary_acc_num : {type : Number, required : true},
   beneficiary_acc_type : {type : String, required : true},
   status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
-  reference: { type: String, required: true, unique: true },
+  reference: { type: String, required: true},
   createdAt: { type: Date, default: Date.now },
 });
 
