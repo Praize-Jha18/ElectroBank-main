@@ -1,10 +1,17 @@
-import User from '../../database/model'
+
 import {Request, Response } from 'express'
+import models from '../../database/model'
+
+const { User, Transaction } = models;
+
+import mongoose from 'mongoose';
 
 const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
     const  {form, account_type} = req.body
     const {amount, reference, beneficiary_acc_num, beneficiary_name} = form
     const userID = res.locals.user
+console.log(beneficiary_acc_num);
+console.log(typeof(beneficiary_acc_num));
 
     try{
         const user = await User.findById(userID)
@@ -22,36 +29,54 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
 
             // Deduct from sender
             user.current_balance -= amount;
-            user.transactions.push({
-                amount,
-                type: "debit",
-                reference,
-                beneficiary_name,
-                beneficiary_acc_type: account_type,
-                beneficiary_acc_num, 
-                status: "completed", 
-                createdAt: new Date(), 
-            });
+            // user.transactions.push({
+            //     amount,
+            //     type: "debit",
+            //     reference,
+            //     beneficiary_name,
+            //     beneficiary_acc_type: account_type,
+            //     beneficiary_acc_num, 
+            //     status: "completed", 
+            //     createdAt: new Date(), 
+            // });
             // Add to beneficiary (only if found)
         if (beneficiary) {
             beneficiary.current_balance += amount;
-            beneficiary.transactions.push({
-                amount,
-                type: "credit",
-                beneficiary_name,
-                beneficiary_acc_type: account_type,
-                reference,
-                beneficiary_acc_num, 
-                status: "completed",
-                createdAt: new Date(),
-            });
+            // beneficiary.transactions.push({
+            //     amount,
+            //     type: "credit",
+            //     beneficiary_name,
+            //     beneficiary_acc_type: account_type,
+            //     reference,
+            //     beneficiary_acc_num, 
+            //     status: "completed",
+            //     createdAt: new Date(),
+            // });
 
+            console.log('saved');
             await beneficiary.save();
         }
-
         await user.save();
-        res.status(201).json({success : "Transfer successful"})
-        }
+        // send to transaction table 
+        Transaction.create({
+            amount,
+            type: "credit",
+            beneficiary_name,
+            beneficiary_acc_type: account_type,
+            reference,
+            beneficiary_acc_num,
+            status: "completed",
+            createdAt: new Date(),
+            user_id: user.email,
+            sender_name: user.name,
+            sender_acc_num: user.acc_num,
+            sender_acc_type: user.account_type,
+            transaction_id: new  mongoose.Types.ObjectId()
+            
+        });
+        
+
+} 
        
     }catch(err){
         console.log(err)

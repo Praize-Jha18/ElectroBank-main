@@ -2,10 +2,15 @@ import UserNavbar from './UserNavbar'
 import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast, ToastContainer , Id} from 'react-toastify';
 const ChangePassword = () => {
+
+interface Password{
+    password1 : string,
+    password2 : string,
+}
+
     const navigate = useNavigate()
-    const [password, setPassword] = useState({})
+    const [password, setPassword] = useState<Password>({} as Password);
     const [message, setMessage] = useState("")
 
     const handleChange = (e :any)=>{

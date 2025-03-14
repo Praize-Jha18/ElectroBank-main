@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, To, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import UserFooter from "./UserFooter";
 import { toast, ToastContainer , Id} from 'react-toastify';
@@ -338,7 +338,7 @@ const AccountIndex = () => {
             <div className="drawerLinks ">
               {drawerLinks.map((v, i) => (
                 <Link
-                  to={v.link}
+                  to={v.link as To}
                   key={i}
                   className=" text-[#27173e] py-[10px] df-ac px-4">
                   <div className="bg-sky-500 rounded-full mr-4 w-9 h-9 dfAc">

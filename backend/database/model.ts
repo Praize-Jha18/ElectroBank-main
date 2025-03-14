@@ -1,5 +1,6 @@
 // Import necessary types
-import mongoose, { Schema, Document, Model, CallbackError } from "mongoose";
+import mongoose, { Schema, Document, Model, CallbackError, ObjectId } from "mongoose";
+
 import bcrypt from "bcrypt";
 
 // Define the user schema interface
@@ -23,33 +24,46 @@ interface IUser extends Document {
   acc_num: string;
   activated: boolean;
   last_login?: Date;
-  transactions: Transaction[];
 }
 
-interface Transaction {
+interface Transaction extends Document{
   amount: number;
   beneficiary_name : string;
-  beneficiary_acc_num : number;
+  beneficiary_acc_num : string;
   beneficiary_acc_type : string;
   type: "credit" | "debit";
   status: "pending" | "completed" | "failed";
   reference: string;
   createdAt: Date;
+  user_id: string;
+  sender_name: string;
+  sender_acc_num: string;
+  sender_acc_type: string;
+  transaction_id: ObjectId
 }
 
 // Define an interface for the Model that includes statics
 interface IUserModel extends Model<IUser> {
   login(email: string, password: string): Promise<IUser>;
 }
+interface ITransactionModel extends Model<Transaction>{
+  
+  
+}
 const TransactionSchema = new Schema<Transaction>({
   amount: { type: Number, required: true },
   type: { type: String, enum: ["credit", "debit"], required: true },
   beneficiary_name : {type : String, required : true},
-  beneficiary_acc_num : {type : Number, required : true},
+  beneficiary_acc_num : {type : String, required : true},
   beneficiary_acc_type : {type : String, required : true},
   status: { type: String, enum: ["pending", "completed", "failed"], default: "pending" },
   reference: { type: String, required: true},
   createdAt: { type: Date, default: Date.now },
+  user_id: { type: String, required: true },
+  sender_name: { type: String, required: true },
+  sender_acc_num: { type: String, required: true},
+  sender_acc_type: { type: String, required: true },
+  transaction_id : {type: mongoose.Types.ObjectId, required: true},
 });
 
 // Define the user schema
@@ -70,10 +84,9 @@ const userSchema = new Schema<IUser>({
   phone: { type: String, required: true },
   current_balance: { type: Number, required: true },
   profile_photo: { type: String, default: "" },
-  acc_num: { type: String, required: true, unique: true },
+  acc_num: { type: String, required: true, unique: true},
   activated: { type: Boolean, default: false },
   last_login: { type: Date },
-  transactions: [TransactionSchema],
 });
 
 // =================== HASHING PASSWORDS WITH MONGOOSE HOOKS
@@ -104,4 +117,6 @@ userSchema.statics.login = async function (email: string, password: string) {
 
 // =============================== CREATING MODEL
 const User = mongoose.model<IUser, IUserModel>("user", userSchema);
-export default User;
+const Transaction = mongoose.model<Transaction, ITransactionModel>("transactions", TransactionSchema);
+export default{ User , Transaction} ;
+

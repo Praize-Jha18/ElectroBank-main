@@ -5,11 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer , Id} from 'react-toastify';
 
 const BankTransfer = () => {
-    const [selectedAccountType, setSelectedAccountType] = useState('');
-    const [form, setForm] = useState({})
-    const [message, setMessage] = useState("")
 
-    const navigate = useNavigate();
+interface Transaction {
+    amount: string;
+    beneficiary_name: string;
+    beneficiary_acc_num: string;
+    reference: string;
+}
+
+    const [selectedAccountType, setSelectedAccountType] = useState('');
+    const [form, setForm] = useState<Transaction>({} as Transaction);
 
     const handleAccountTypeChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedAccountType(event.target.value);
@@ -18,15 +23,11 @@ const BankTransfer = () => {
         const name = e.target.name
         const value = e.target.value
         
-        setForm((values)=>({...values, [name] : value}))
+        setForm((values)=>({...values, [name] : value}));
     }
     const handleSubmit = (e : React.FormEvent)=>{
         e.preventDefault();
         try{
-            if(selectedAccountType == ''){
-                console.log("Please add the beneficiary's account type")
-                setMessage("Please add the beneficiary's account type")
-            }
             axios.post("http://localhost:3000/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
             .then((response)=>{
                 console.log(response.data)
