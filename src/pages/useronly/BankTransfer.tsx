@@ -6,6 +6,7 @@ import { toast, ToastContainer , Id} from 'react-toastify';
 
 const BankTransfer = () => {
 
+const navigate = useNavigate();
 interface Transaction {
     amount: string;
     beneficiary_name: string;
@@ -32,13 +33,12 @@ interface Transaction {
             .then((response)=>{
                 console.log(response.data)
                 if(response.status == 201){
-                    setMessage(response.data.success)
+                    console.log("yayy")
                 }else{
                     console.log(response.data.error)
-                    setMessage(response.data.error)
                 }
             }).catch((err)=>{
-                // console.log(err)
+                console.log(err)
             }) 
         }catch(err){
             console.log(err)
@@ -77,7 +77,7 @@ interface Transaction {
             <ToastContainer />
                 <div className="body pt-32 pb-36 font-poppins bg-slate-100 h-full">
                 <h1 className='text-[#27173E] text-center text-3xl font-semibold pb-2'>Send Money</h1>
-                <h1 className='text-center'>{message}</h1>
+                <h1 className='text-center'></h1>
                 <h3 className='text-[#27173E] text-center text-base font-medium pb-3'>Fill the form carefully</h3>
 
                 <form className='px-4' onSubmit={handleSubmit}>
