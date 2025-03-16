@@ -118,5 +118,5 @@ userSchema.statics.login = async function (email: string, password: string) {
 // =============================== CREATING MODEL
 const User = mongoose.model<IUser, IUserModel>("user", userSchema);
 const Transaction = mongoose.model<Transaction, ITransactionModel>("transactions", TransactionSchema);
-export default{ User , Transaction} ;
+export default { User , Transaction} ;
 
