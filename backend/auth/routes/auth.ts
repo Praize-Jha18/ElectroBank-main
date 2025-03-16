@@ -3,6 +3,7 @@ import authController from '../controllers/authController';
 import userInfoController from '../controllers/userInfo';
 import authMiddleware from '../../middleware/authMiddleware';
 import transaction from '../controllers/transactions';
+import transacHistory from '../controllers/history'
 
 const { verifyUser, requireAuth } = authMiddleware;
 
@@ -20,5 +21,8 @@ router.post('/password', requireAuth, userInfoController.changePassword)
 
 //================ Transaction Route
 router.post('/transfer',requireAuth, transaction.bankTransfer)
+
+//=============== History Route
+router.post('/transact-statement',requireAuth, transacHistory.transac)
 
 export default router;

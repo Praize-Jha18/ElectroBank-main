@@ -3,6 +3,7 @@ import UserNavbar from './UserNavbar'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer , Id} from 'react-toastify';
+import { CheckmarkCircle } from 'react-ionicons';
 
 const BankTransfer = () => {
 
@@ -15,7 +16,10 @@ interface Transaction {
 }
 
     const [selectedAccountType, setSelectedAccountType] = useState('');
+    const [message, setMessage] = useState("")
+    const [showModal, setshowModal] = useState(false)
     const [form, setForm] = useState<Transaction>({} as Transaction);
+
 
     const handleAccountTypeChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setSelectedAccountType(event.target.value);
@@ -31,11 +35,13 @@ interface Transaction {
         try{
             axios.post("http://localhost:3000/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
             .then((response)=>{
-                console.log(response.data)
                 if(response.status == 201){
-                    console.log("yayy")
+                    console.log(response.data.message)
+                    setshowModal(true)
+                    // setForm({})
                 }else{
                     console.log(response.data.error)
+                    setMessage(response.data.error)
                 }
             }).catch((err)=>{
                 console.log(err)
@@ -44,6 +50,11 @@ interface Transaction {
             console.log(err)
         }
         
+    }
+    const resetHandler = ()=>{
+        setMessage("");
+        setshowModal(false);
+        setForm({});
     }
 
 
@@ -73,11 +84,26 @@ interface Transaction {
     
     return (
         <>
+             <div className={`absolute w-[100%] bg-[#0000005d] ${showModal ? `block` : `hidden` } h-[100%] z-10 flex justify-center items-center`}>
+                <div className='modal w-[40%] mx-auto h-[400px] absolute left-0 right-0 bg-white rounded-md z-20'>
+                    <div className='w-[90%] h-[100%] mx-auto flex flex-col justify-center items-center'>
+                        <CheckmarkCircle width="100px" height="100px" color="#4BB543" />
+                        <h1 className='font-poppins text-[20px] font-[500]'>Transfer successful</h1>
+                        <h6 className='text-[15px] font-montserrat font-[400] text-center'>{(`$${form.amount || ""}`)}</h6>
+                        <p className='text-center font-poppins text-[#b5b4b4] '>The beneficiary account is expected to be credited within 5 minutes, subject to notification by the bank</p>
+                        <button className='mt-10 w-[30%] h-[10%] bg-[#4BB543] rounnded-sm text-white' onClick={resetHandler}>Dismiss</button>
+                    </div>
+               
+                </div>
+                </div>
             <UserNavbar header={'Bank Transfer'} />
             <ToastContainer />
+                <h1>{message}</h1>
                 <div className="body pt-32 pb-36 font-poppins bg-slate-100 h-full">
                 <h1 className='text-[#27173E] text-center text-3xl font-semibold pb-2'>Send Money</h1>
                 <h1 className='text-center'></h1>
+               
+                
                 <h3 className='text-[#27173E] text-center text-base font-medium pb-3'>Fill the form carefully</h3>
 
                 <form className='px-4' onSubmit={handleSubmit}>
@@ -104,7 +130,7 @@ interface Transaction {
                             <span className='text-red-500'> *</span>
                         </label>
                         <div>
-                            <input type="radio" id="PERSONAL (Savings)" name="accountType" value="PERSONAL (Savings)" checked={selectedAccountType === 'PERSONAL (Savings)'} onChange={handleAccountTypeChange} />
+                            <input type="radio" id="PERSONAL (Savings)" name="accountType" value="SAVINGS" checked={selectedAccountType === 'SAVINGS'} onChange={handleAccountTypeChange} />
                             <label htmlFor="PERSONAL (Savings)" className="pl-1 text-stone-500 font-[400]">PERSONAL (Savings)</label>
                         </div>
                         <div>

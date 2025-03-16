@@ -10,8 +10,8 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
     const  {form, account_type} = req.body
     const {amount, reference, beneficiary_acc_num, beneficiary_name} = form
     const userID = res.locals.user
-console.log(beneficiary_acc_num);
-console.log(typeof(beneficiary_acc_num));
+
+    const amountNumber = Number(amount)
 
     try{
         const user = await User.findById(userID)
@@ -23,45 +23,28 @@ console.log(typeof(beneficiary_acc_num));
                 res.status(500).json({error : "Account not found"})
             }
              // Check if user has enough balance
-            if (user.current_balance < amount) {
+            if (user.current_balance < amountNumber) {
                 res.status(401).json({ error: "Insufficient funds" });
             }
 
             // Deduct from sender
-            user.current_balance -= amount;
-            // user.transactions.push({
-            //     amount,
-            //     type: "debit",
-            //     reference,
-            //     beneficiary_name,
-            //     beneficiary_acc_type: account_type,
-            //     beneficiary_acc_num, 
-            //     status: "completed", 
-            //     createdAt: new Date(), 
-            // });
+            user.current_balance -= amountNumber;
+
             // Add to beneficiary (only if found)
         if (beneficiary) {
-            beneficiary.current_balance += amount;
-            // beneficiary.transactions.push({
-            //     amount,
-            //     type: "credit",
-            //     beneficiary_name,
-            //     beneficiary_acc_type: account_type,
-            //     reference,
-            //     beneficiary_acc_num, 
-            //     status: "completed",
-            //     createdAt: new Date(),
-            // });
-
+            if(beneficiary.account_type != account_type.toLowerCase()){
+                res.status(402).json({error : "Invalid Account type"})
+            }
+            beneficiary.current_balance += amountNumber;
             console.log('saved');
             await beneficiary.save();
         }
         await user.save();
         // send to transaction table 
         Transaction.create({
-            amount,
+            amount : amountNumber,
             type: "credit",
-            beneficiary_name,
+            beneficiary_name, 
             beneficiary_acc_type: account_type,
             reference,
             beneficiary_acc_num,
@@ -74,6 +57,7 @@ console.log(typeof(beneficiary_acc_num));
             transaction_id: new  mongoose.Types.ObjectId()
             
         });
+        res.status(201).json({message : "Transfer Successful"})
         
 
 } 
