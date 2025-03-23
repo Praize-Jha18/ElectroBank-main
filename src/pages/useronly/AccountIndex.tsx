@@ -2,7 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, To, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import UserFooter from "./UserFooter";
-import { toast, ToastContainer , Id} from 'react-toastify';
+import { toast, ToastContainer, Id } from "react-toastify";
+import { parseISO, compareDesc, format } from "date-fns";
 import {
   ArrowDownOutline,
   ArrowUpOutline,
@@ -23,22 +24,22 @@ import { faBars, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import { TitleUpdater } from "../../reusables/TitleUpdater";
 import axios from "axios";
 
-  // ======== LOGOUT FUNCTION
-  const logout = async ()=>{
-    try {
-      const response = await axios.get("http://localhost:3000/logout", {
-        withCredentials: true, // Ensure cookies are included
-      });
-  
-      if (response.status === 201) {
-        toast.success("Logout successful"); // Show a toast message
-        window.location.assign("/")
-      }
-    } catch (error) {
-      toast.error("Logout failed, please try again.");
-      console.error("Logout error:", error);
+// ======== LOGOUT FUNCTION
+const logout = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/logout", {
+      withCredentials: true, // Ensure cookies are included
+    });
+
+    if (response.status === 201) {
+      toast.success("Logout successful"); // Show a toast message
+      window.location.assign("/");
     }
+  } catch (error) {
+    toast.error("Logout failed, please try again.");
+    console.error("Logout error:", error);
   }
+};
 const topLinks = [
   {
     to: "/account/domestic-transfer",
@@ -137,94 +138,93 @@ const links = [
   },
 ];
 
-const drawerLinks: { text: string; link?: string; icon: React.JSX.Element }[] = [
-  {
-    text: "Dashboard",
-    link: "./",
-    icon: (
-      <PieChartOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "My Profile",
-    link: "./profile",
-    icon: (
-      <PersonOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Change Password",
-    link: "./change-password",
-    icon: (
-      <KeyOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "My Statement",
-    link: "./account-statement",
-    icon: (
-      <TimeOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Domestic Transfer",
-    link: "./domestic-transfer",
-    icon: (
-      <ArrowDownOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Inter Bank Transfer",
-    link: "./bank-transfer",
-    icon: (
-      <ArrowUpOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Wire Transfer",
-    link: "./domestic-transfer",
-    icon: (
-      <SwapVertical
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Support",
-    link: "./support",
-    icon: (
-      <MailOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    ),
-  },
-  {
-    text: "Log out",
-    icon: (
-      <div onClick={logout} className="cursor-pointer">
-      <LogOutOutline
-        style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
-      />
-    </div>
-    ),
-  },
-];
+const drawerLinks: { text: string; link?: string; icon: React.JSX.Element }[] =
+  [
+    {
+      text: "Dashboard",
+      link: "./",
+      icon: (
+        <PieChartOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "My Profile",
+      link: "./profile",
+      icon: (
+        <PersonOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Change Password",
+      link: "./change-password",
+      icon: (
+        <KeyOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "My Statement",
+      link: "./account-statement",
+      icon: (
+        <TimeOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Domestic Transfer",
+      link: "./domestic-transfer",
+      icon: (
+        <ArrowDownOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Inter Bank Transfer",
+      link: "./bank-transfer",
+      icon: (
+        <ArrowUpOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Wire Transfer",
+      link: "./domestic-transfer",
+      icon: (
+        <SwapVertical
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Support",
+      link: "./support",
+      icon: (
+        <MailOutline
+          style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+        />
+      ),
+    },
+    {
+      text: "Log out",
+      icon: (
+        <div onClick={logout} className="cursor-pointer">
+          <LogOutOutline
+            style={{ height: "1.5rem", width: "1.4rem", color: "white" }}
+          />
+        </div>
+      ),
+    },
+  ];
 
 const AccountIndex = () => {
-
-
   interface User {
     name: string;
     acc_num: string;
@@ -239,16 +239,24 @@ const AccountIndex = () => {
   }
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
+  const [creditTransac, setCreditTransac] = useState([]);
+  const [debitTransac, setDebitTransac] = useState([]);
 
   useEffect(() => {
-    const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
+    const toastId: Id = toast.info("Please wait, fetching user data...", {
+      autoClose: false,
+      closeOnClick: false,
+    });
     axios
-      .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
+      .get<{ user: User }>("http://localhost:3000/getUser", {
+        withCredentials: true,
+      })
       .then((response) => {
         if (response) {
           const User = response.data.user;
           console.log(User);
-          setUser(User); toast.dismiss(toastId);
+          setUser(User);
+          toast.dismiss(toastId);
         } else {
           console.log("user not found");
           navigate("/auth/login");
@@ -260,26 +268,34 @@ const AccountIndex = () => {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/transact-statement", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response) {
+          setCreditTransac(response.data.sender_details);
+          setDebitTransac(response.data.beneficiary_details);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-  const Transaction = (props: { transactions: string }) => {
-    return (
-      <div className="px-4">
-        <div className="df-jsb-ac pb-4">
-          <h3 className="text-xl font-semibold capitalize text-[#27173E]">
-            {" "}
-            {props.transactions} transactions{" "}
-          </h3>
-          <Link to={"/account/account-statement"} className="text-purple-500">
-            View all
-          </Link>
-        </div>
-        <p className="text-sm bg-white py-[1.4rem] shadow-[0_0_3px_#a3a3a3] pl-4 rounded-md text-[#27173E] font-[600] ">
-          {" "}
-          No {props.transactions} transactions at the moment
-        </p>
-      </div>
-    );
+  const formatDate = (isoDate: string) => {
+    return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
   };
+
+  const getLatestTransactions = (transactions) => {
+    return transactions
+      .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
+      .slice(0, 3); // Get the latest 3 transactions
+  };
+  const latestCreditTransaction = getLatestTransactions(creditTransac);
+  const latestDebitTransaction = getLatestTransactions(debitTransac)
+
   const [nav, showNav] = useState<boolean>(false);
   return (
     <>
@@ -318,12 +334,15 @@ const AccountIndex = () => {
             onClick={(e: React.MouseEvent<HTMLDivElement>) => {
               e.stopPropagation();
             }}>
-              
             <div className="header px-4 dfAc gap-8 py-4">
               <FontAwesomeIcon icon={faUser} className="text-[#27173E] h-6 " />
               <div className="pr-6">
-                <p className="text-base text-[#27173E]">{user ? user.name : ""}</p>
-                <p className="text-[#a9abad] text-sm">Acc No: {user ? user.acc_num : ""}</p>
+                <p className="text-base text-[#27173E]">
+                  {user ? user.name : ""}
+                </p>
+                <p className="text-[#a9abad] text-sm">
+                  Acc No: {user ? user.acc_num : ""}
+                </p>
               </div>
               <FontAwesomeIcon
                 icon={faTimes}
@@ -333,7 +352,11 @@ const AccountIndex = () => {
             </div>
             <div className="bg-sky-500 py-2 pl-4">
               <p className="text-sm text-white text-opacity-60">Balance</p>
-              <p className="text-3xl pt-2 mb-1 font-bold text-white">{user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : "" }</p>
+              <p className="text-3xl pt-2 mb-1 font-bold text-white">
+                {user && user.account_currency == "naira"
+                  ? `₦ ${user.current_balance}`
+                  : ""}
+              </p>
             </div>
             <div className="drawerLinks ">
               {drawerLinks.map((v, i) => (
@@ -356,12 +379,33 @@ const AccountIndex = () => {
           <div className="details   mx-4 px-4 pt-4 bg-white rounded-tl-xl rounded-tr-xl">
             <div className="df-jsb-ac">
               <div className="text-[#27173E]">
-                <p className="text-base">{user ? user.name : "Fetching Name"}</p>
-                <h1 className="text-3xl font-semibold pt-1 pb-3">{user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : `${user != null? `$ ${user.current_balance}` : 'Loading balance'}` }</h1>
-                <p className="text-sm">Ledger Balance: {user && user.account_currency == "naira" ? `₦ ${user.current_balance}` : `${user != null? `$ ${user.current_balance}` : 'Loading Ledger balance'}` }</p>
+                <p className="text-base">
+                  {user ? user.name : "Fetching Name"}
+                </p>
+                <h1 className="text-3xl font-semibold pt-1 pb-3">
+                  {user && user.account_currency == "naira"
+                    ? `₦ ${user.current_balance}`
+                    : `${
+                        user != null
+                          ? `$ ${user.current_balance}`
+                          : "Loading balance"
+                      }`}
+                </h1>
+                <p className="text-sm">
+                  Ledger Balance:{" "}
+                  {user && user.account_currency == "naira"
+                    ? `₦ ${user.current_balance}`
+                    : `${
+                        user != null
+                          ? `$ ${user.current_balance}`
+                          : "Loading Ledger balance"
+                      }`}
+                </p>
               </div>
-              <p>Acct Type: {user && user.account_type ?  user.account_type : 'Loading type'}</p>
-          
+              <p>
+                Acct Type:{" "}
+                {user && user.account_type ? user.account_type : "Loading type"}
+              </p>
             </div>
             <div className="border-b border-gray-300 py-2"></div>
           </div>
@@ -412,9 +456,124 @@ const AccountIndex = () => {
         </div>
 
         <div className="pt-8 "></div>
-        <Transaction transactions={"credit"} />
+        <div className="credit w-[98%] mx-auto">
+        <div className="flex justify-between items-center">
+          <h1 className="font-poppins font-medium mb-2 ">Recent Credit transaction</h1>
+          <Link to={'/account/account-statement'}><h1>View all</h1></Link>
+          </div>
+          {latestCreditTransaction.length > 0 ? (
+            <div className="w-full h-auto py-5 bg-white">
+              {latestCreditTransaction.map((transac : any, index) => (
+                <div
+                  key={index}
+                  className="w-[90%] mt-5 mx-auto h-auto flex flex-row justify-between items-center">
+                  <div>
+                    <h1 className="text-[14px]">
+                      name:{" "}
+                      <span className="text-[10px]">
+                        {transac.beneficiary_name}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Account number :{" "}
+                      <span className="text-[10px]">
+                        {transac.beneficiary_acc_num}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Amount :{" "}
+                      <span className="text-[10px] text-[red]">
+                        -{transac.amount}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Account type :{" "}
+                      <span className="text-[10px]">{transac.acc_type}</span>
+                    </h1>
+                  </div>
+                  <div>
+                    <h1 className="text-[14px]">
+                      Status:{" "}
+                      <span className="text-[12px] text-[green]">
+                        {transac.status}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      ref :{" "}
+                      <span className="text-[12px]">{transac.transac_id}</span>
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Date :{" "}
+                      <span className="text-[12px]">
+                        {formatDate(transac.date)}
+                      </span>
+                    </h1>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <h1>No transaction...</h1>
+          )}
+        </div>
         <div className="pt-8 "></div>
-        <Transaction transactions={"debit"} />
+        <div className="credit w-[98%] mx-auto">
+          <div className="flex justify-between items-center">
+          <h1 className="font-poppins font-medium mb-2 ">Recent Debit transaction</h1>
+          <Link to={'/account/account-statement'}><h1>View all</h1></Link>
+          </div>
+         
+          {latestCreditTransaction.length > 0 ? (
+            <div className="w-full h-auto py-5 bg-white">
+              {latestDebitTransaction.map((transac : any, index) => (
+                <div
+                  key={index}
+                  className="w-[90%] mt-5 mx-auto h-auto flex flex-row justify-between items-center">
+                  <div>
+                    <h1 className="text-[14px]">
+                      name:{" "}
+                      <span className="text-[10px]">
+                        {transac.sender_name}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Account number :{" "}
+                      <span className="text-[10px]">
+                        {transac.sender_acc_num}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Amount :{" "}
+                      <span className="text-[10px] text-[green]">
+                        +{transac.amount}
+                      </span>{" "}
+                    </h1>
+                  </div>
+                  <div>
+                    <h1 className="text-[14px]">
+                      Status:{" "}
+                      <span className="text-[12px] text-[green]">
+                        {transac.status}
+                      </span>{" "}
+                    </h1>
+                    <h1 className="text-[14px]">
+                      ref :{" "}
+                      <span className="text-[12px]">{transac.transac_id}</span>
+                    </h1>
+                    <h1 className="text-[14px]">
+                      Date :{" "}
+                      <span className="text-[12px]">
+                        {formatDate(transac.date)}
+                      </span>
+                    </h1>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <h1>No transaction...</h1>
+          )}
+        </div>
         <div className="pb-20 "></div>
       </div>
       <UserFooter />

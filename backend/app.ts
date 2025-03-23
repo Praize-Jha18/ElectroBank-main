@@ -12,7 +12,7 @@ import flash from "connect-flash";
 
 import session from "express-session";
 import authRoute from "./auth/routes/auth"
-import key from './auth/controllers/token'
+import { key } from './auth/controllers/token'
 
 const app = express();
 

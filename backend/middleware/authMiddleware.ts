@@ -5,7 +5,7 @@ The user is sent to the res.json() method and axios retrives the response and ge
 import { Request, Response, NextFunction } from 'express'
 
 import jwt from 'jsonwebtoken'
-import key from '../auth/controllers/token'
+import { key } from '../auth/controllers/token'
 import models from '../database/model'
 
 const { User } = models;

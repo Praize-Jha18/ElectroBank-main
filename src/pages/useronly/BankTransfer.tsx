@@ -95,7 +95,7 @@ interface Transaction {
                     </div>
                
                 </div>
-                </div>
+             </div>
             <UserNavbar header={'Bank Transfer'} />
             <ToastContainer />
                 <h1>{message}</h1>

@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import key from './token'
+import {key} from './token'
 import jwt from 'jsonwebtoken'
 import models from '../../database/model'
+
 
 const { User } = models;
 // ======================== CREATING JWT TOKEN

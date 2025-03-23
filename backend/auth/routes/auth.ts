@@ -23,6 +23,9 @@ router.post('/password', requireAuth, userInfoController.changePassword)
 router.post('/transfer',requireAuth, transaction.bankTransfer)
 
 //=============== History Route
-router.post('/transact-statement',requireAuth, transacHistory.transac)
+router.get('/transact-statement',requireAuth, transacHistory.transac)
+router.post('/support',requireAuth, transacHistory.support)
+
+
 
 export default router;
