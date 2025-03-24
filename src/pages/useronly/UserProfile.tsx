@@ -32,7 +32,7 @@ const UserProfile = () => {
   };
   const submitForm = async () => {
     await axios
-      .post<UserUpdated>("http://localhost:3000/editprofile", profileChange, {
+      .post<UserUpdated>("https://electrobank-main.onrender.com/editprofile", profileChange, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -73,7 +73,7 @@ const UserProfile = () => {
       closeOnClick: false,
     });
     axios
-      .get<{ user: User }>("http://localhost:3000/getUser", {
+      .get<{ user: User }>("https://electrobank-main.onrender.com/getUser", {
         withCredentials: true,
       })
       .then((response) => {

@@ -19,7 +19,7 @@ const app = express();
 //=============================== MIDDLEWARE
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow frontend requests
+    origin: "https://electrobank-main-1.onrender.com", // Allow frontend requests
     credentials: true, // Allow cookies if needed
   })
 );

@@ -33,7 +33,7 @@ interface Transaction {
     const handleSubmit = (e : React.FormEvent)=>{
         e.preventDefault();
         try{
-            axios.post("http://localhost:3000/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
+            axios.post("https://electrobank-main.onrender.com/transfer", {form, account_type : selectedAccountType}, {withCredentials : true})
             .then((response)=>{
                 if(response.status == 201){
                     console.log(response.data.message)
@@ -68,7 +68,7 @@ interface Transaction {
     useEffect(() => {
         const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
         axios
-          .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
+          .get<{ user: User }>("https://electrobank-main.onrender.com/getUser", { withCredentials: true })
           .then((response) => {
             if (response) {
             const User = response.data.user;

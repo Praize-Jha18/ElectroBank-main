@@ -28,7 +28,7 @@ interface Password{
                 console.log("Passwords are not the same")
                 setMessage("Passwords are not the same")
             }else{
-                await axios.post('http://localhost:3000/password', { password: confirmPassword }, {withCredentials : true})
+                await axios.post('https://electrobank-main.onrender.com/password', { password: confirmPassword }, {withCredentials : true})
                 .then((response)=>{
                     if(response.status === 200){
                         setMessage(response.data.message)

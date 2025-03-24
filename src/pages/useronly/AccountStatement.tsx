@@ -44,7 +44,7 @@ const AccountStatement = () => {
     useEffect(() => {
         const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
         axios
-        .get<{ user: User }>("http://localhost:3000/getUser", { withCredentials: true })
+        .get<{ user: User }>("https://electrobank-main.onrender.com/getUser", { withCredentials: true })
         .then((response) => {
             if (response) {
             const User = response.data.user;
@@ -62,7 +62,7 @@ const AccountStatement = () => {
     }, []);
 
     useEffect(()=>{
-        axios.get('http://localhost:3000/transact-statement', {withCredentials : true})
+        axios.get('https://electrobank-main.onrender.com/transact-statement', {withCredentials : true})
         .then((response)=>{
             if(response){
                 setCreditTransac(response.data.sender_details)

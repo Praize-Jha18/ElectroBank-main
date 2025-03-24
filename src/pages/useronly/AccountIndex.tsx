@@ -27,7 +27,7 @@ import axios from "axios";
 // ======== LOGOUT FUNCTION
 const logout = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/logout", {
+    const response = await axios.get("https://electrobank-main.onrender.com/logout", {
       withCredentials: true, // Ensure cookies are included
     });
 
@@ -259,7 +259,7 @@ const AccountIndex = () => {
       closeOnClick: false,
     });
     axios
-      .get<{ user: User }>("http://localhost:3000/getUser", {
+      .get<{ user: User }>("https://electrobank-main.onrender.com/getUser", {
         withCredentials: true,
       })
       .then((response) => {
@@ -281,7 +281,7 @@ const AccountIndex = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/transact-statement", {
+      .get("https://electrobank-main.onrender.com/transact-statement", {
         withCredentials: true,
       })
       .then((response) => {

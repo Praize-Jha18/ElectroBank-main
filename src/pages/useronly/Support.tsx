@@ -33,7 +33,7 @@ const Support = () => {
 
   const submitForm = async (e : React.FormEvent)=>{
     e.preventDefault();
-    await axios.post('http://localhost:3000/support',{mailForm},{ withCredentials: true, })
+    await axios.post('https://electrobank-main.onrender.com/support',{mailForm},{ withCredentials: true, })
     .then((response)=>{
       console.log(response.data.message)
       setMessage(response.data.message)
@@ -56,7 +56,7 @@ const Support = () => {
     useEffect(() => {
       const toastId: Id = toast.info("Please wait, fetching user data...", { autoClose: false, closeOnClick: false });
       axios
-      .get("http://localhost:3000/getUser", { withCredentials: true })
+      .get("https://electrobank-main.onrender.com/getUser", { withCredentials: true })
       .then((response) => {
           if (response) {
           const User = response.data.user;
