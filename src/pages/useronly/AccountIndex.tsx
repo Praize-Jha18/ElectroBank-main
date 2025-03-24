@@ -237,6 +237,17 @@ const AccountIndex = () => {
     account_currency: string;
     account_type: string;
   }
+  interface Transaction {
+    date: string;
+    amount: string;
+    status: string;
+    transac_id: string;
+    beneficiary_name?: string;
+    beneficiary_acc_num?: string;
+    sender_name?: string;
+    sender_acc_num?: string;
+    acc_type?: string;
+  }
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [creditTransac, setCreditTransac] = useState([]);
@@ -288,7 +299,7 @@ const AccountIndex = () => {
     return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
   };
 
-  const getLatestTransactions = (transactions) => {
+  const getLatestTransactions = (transactions: Transaction[]): Transaction[] => {
     return transactions
       .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
       .slice(0, 3); // Get the latest 3 transactions
@@ -463,7 +474,7 @@ const AccountIndex = () => {
           </div>
           {latestCreditTransaction.length > 0 ? (
             <div className="w-full h-auto py-5 bg-white">
-              {latestCreditTransaction.map((transac : any, index) => (
+              {latestCreditTransaction.map((transac: Transaction, index: number) => (
                 <div
                   key={index}
                   className="w-[90%] mt-5 mx-auto h-auto flex flex-row justify-between items-center">
@@ -525,7 +536,7 @@ const AccountIndex = () => {
          
           {latestCreditTransaction.length > 0 ? (
             <div className="w-full h-auto py-5 bg-white">
-              {latestDebitTransaction.map((transac : any, index) => (
+              {latestDebitTransaction.map((transac: Transaction, index: number) => (
                 <div
                   key={index}
                   className="w-[90%] mt-5 mx-auto h-auto flex flex-row justify-between items-center">

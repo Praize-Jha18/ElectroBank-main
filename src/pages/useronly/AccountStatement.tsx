@@ -8,12 +8,24 @@ import { format } from "date-fns";
 
 const AccountStatement = () => {
     const navigate = useNavigate();
-    const [creditTransac, setCreditTransac] = useState([])
-    const [debitTransac, setDebitTransac] = useState([])
+    const [creditTransac, setCreditTransac] = useState<Transaction[]>([]);
+    const [debitTransac, setDebitTransac] = useState<Transaction[]>([]);
 
     const formatDate = (isoDate: string) => {
         return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
     };
+
+    interface Transaction {
+        beneficiary_name?: string;
+        beneficiary_acc_num?: string;
+        sender_name?: string;
+        sender_acc_num?: string;
+        amount: number;
+        acc_type: string;
+        status: string;
+        transac_id: string;
+        date: string;
+    }
     
     //============== User Interface ============== //
     interface User {

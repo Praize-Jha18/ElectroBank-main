@@ -54,7 +54,10 @@ interface Transaction {
     const resetHandler = ()=>{
         setMessage("");
         setshowModal(false);
-        setForm({});
+        setForm({   amount: "",
+            beneficiary_name: "",
+            beneficiary_acc_num: "",
+            reference: ""});
     }
 
 

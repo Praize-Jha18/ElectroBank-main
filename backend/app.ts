@@ -39,10 +39,11 @@ app.use(
   ); 
 
 //=============================== DATABASE CONFIG
+const port = 3000;
 const dbiUri = 'mongodb+srv://praisejahfrancis:peejay@peejaycluster.ccu0cf5.mongodb.net/EliteOceanicSavings?retryWrites=true&w=majority&appName=peejaycluster'
 mongoose.connect(dbiUri)
   .then(()=>{
-    app.listen(3000, ()=>console.log("App running on port 3000"))
+    app.listen(port, ()=>console.log(`App running on port ${port}`))
   })
   .catch((err)=> console.log(err))
 
@@ -53,6 +54,6 @@ app.use(authRoute)
 
 //=============================== STATIC PAGES
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+  res.status(404).json({ message: 'Route not found' });
 });
 

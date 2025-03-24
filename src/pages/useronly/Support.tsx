@@ -5,8 +5,21 @@ import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer, Id } from "react-toastify";
 import axios from 'axios'
 const Support = () => {
+
+  interface MailForm {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+  }
+
   const navigate = useNavigate();
-  const [mailForm, setMailForm] = useState({})
+  const [mailForm, setMailForm] = useState<MailForm>({
+    name: "",
+  email: "",
+  subject: "",
+  message: "",
+  })
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [message,setMessage] = useState("")
@@ -24,7 +37,12 @@ const Support = () => {
     .then((response)=>{
       console.log(response.data.message)
       setMessage(response.data.message)
-      setMailForm({})
+      setMailForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
       setTimeout(() => {
         setMessage("")
       }, 5000);
