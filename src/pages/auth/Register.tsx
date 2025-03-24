@@ -74,7 +74,7 @@ const Register = () => {
     console.log("Form data:", formState);
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/signup", formState, {
+      const response = await axios.post("https://electrobank-main.onrender.com/signup", formState, {
           headers: { "Content-Type": "application/json" },
           withCredentials : true
       });

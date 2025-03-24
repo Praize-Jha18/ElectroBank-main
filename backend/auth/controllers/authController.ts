@@ -80,7 +80,7 @@ const login = async (req : Request, res: Response): Promise<void> =>{
             res.status(500).json({message : "Invalid email or password, User not found"})
         }
         const token = createToken(String(user._id))
-        res.cookie('jwt', token,{httpOnly : true, maxAge : maxAge * 1000 })
+        res.cookie("jwt", token,{httpOnly : true, maxAge : maxAge * 1000 })
         res.status(201).json({user});
     }
     catch(err){
@@ -93,7 +93,7 @@ const logout = (req :  Request, res : Response)=>{
     const isCookie = req.cookies.jwt
     console.log(isCookie)
     if(isCookie){
-        res.cookie('jwt', ' ', {maxAge : 1})
+        res.cookie('jwt', ' ', { httpOnly: true, secure: true, sameSite: "none", maxAge: 1 })
     }
     res.status(201).json({message : "logout successful"})
 }
