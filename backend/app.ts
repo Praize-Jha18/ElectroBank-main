@@ -52,8 +52,5 @@ app.use(express.static(path.join(__dirname, "../dist")));
 //=============================== ROUTES PAGES LOADED
 app.use(authRoute)
 
-//=============================== STATIC PAGES
-app.get('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+
 
