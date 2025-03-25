@@ -21,6 +21,7 @@ app.use(
   cors({
     origin: "https://electrobank-main-1.onrender.com", // Allow frontend requests
     credentials: true, // Allow cookies if needed
+    // allowedHeaders: ["Content-Type", "Authorization"], 
   })
 );
 app.use(express.json())

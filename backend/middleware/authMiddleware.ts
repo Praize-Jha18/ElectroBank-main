@@ -11,6 +11,7 @@ import models from '../database/model'
 const { User } = models;
 const verifyUser = async (req : Request, res : Response, next : NextFunction): Promise<void> =>{
     const token = req.cookies.jwt
+ 
     if(token){
         jwt.verify(token, key, async (err : any, decodedToken: any)=>{
             if(err){
@@ -29,12 +30,16 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
         })
     }else{
         console.log("Token not found")
+        console.log("Token: ", token)
+        console.log(res.cookie)
         res.status(401).json({error : "Token not found"})
     }
 }
 
 const requireAuth = (req : Request, res : Response, next : NextFunction) => {
     const token = req.cookies.jwt;
+    console.log("Token: ", token)
+    console.log(res.cookie)
     if(token){
         jwt.verify(token, key, async (err : any, decodedToken: any)=>{
             if(err){
@@ -48,7 +53,9 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
     }})}
     else{
         console.log("User not authenticated")
-        res.status(500).json({err : "user not authenticated", redirect : '/'})
+        console.log("Token: ", token)
+        console.log(res.cookie)
+        res.status(401).json({err : "user not authenticated", redirect : '/'})
         next();
     }
 }
