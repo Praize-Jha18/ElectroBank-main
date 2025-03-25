@@ -38,14 +38,14 @@ interface Transaction {
                 if(response.status == 201){
                     console.log(response.data.message)
                     setshowModal(true)
-                    // setForm({})
                 }else{
-                    console.log(response.data.error)
+                    toast.error(response.data.error)
                     setMessage(response.data.error)
                 }
             }).catch((err)=>{
                 console.log(err)
-                setMessage(err)
+                toast.error(err.message)
+                setMessage(err.message)
             }) 
         }catch(err){
             console.log(err)
