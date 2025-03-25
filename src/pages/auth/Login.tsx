@@ -28,9 +28,9 @@ const Login = () => {
       if (response.status === 201) {
         navigate("/account");
         toast.dismiss(toastId)
-        toast.info("Logged in successfully")
+        toast.success("Logged in successfully")
       }else{
-        toast.info(response.data.message)
+        toast.error(response.data.message)
       }
     } catch (error: any) {
       // Handle backend error message
