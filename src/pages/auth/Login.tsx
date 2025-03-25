@@ -31,6 +31,7 @@ const Login = () => {
       }
     } catch (err: any) {
       // Handle backend error message
+      console.log(err)
       console.error(err.response.data.error);
     
     // Extract error message from backend response
