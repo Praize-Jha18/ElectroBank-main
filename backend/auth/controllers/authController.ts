@@ -76,16 +76,23 @@ const login = async (req : Request, res: Response): Promise<void> =>{
     console.log(email, password)
     try {
         const user = await User.login(email, password);
-        if (!user){
-            res.status(500).json({message : "Invalid email or password, User not found"})
-        }
         const token = createToken(String(user._id))
         res.cookie("jwt", token,{httpOnly : true, maxAge : maxAge * 1000, sameSite: "none", secure: true })
         res.status(201).json({user});
     }
-    catch(err){
-        console.error(err);
-        res.status(500).json({err});
+    catch(err: any){
+        console.error(err.message); // Log error message
+
+        // Determine the appropriate status code based on the error
+        let statusCode = 500;
+        let errorMessage = "An unexpected error occurred";
+
+        if (err.message === "Email not found" || err.message === "Email or password is incorrect") {
+            statusCode = 401; // Unauthorized
+            errorMessage = err.message;
+        }
+
+        res.status(statusCode).json({ error: errorMessage });
     }
 }
 
