@@ -7,7 +7,6 @@ import { toast, ToastContainer, Id } from "react-toastify";
 const Login = () => {
   
 
-  const [message, setMessage] = useState("")
   const [Form, setForm] = useState({
     email : "",
     password : ""
@@ -52,7 +51,6 @@ const Login = () => {
          
           <div className="px-4">
             <div className='mt-4'>
-            <h1 className="text-[20px]">{message}</h1>
               <label htmlFor="email" className='text-[#27173E] text-xs'>Email</label>
               <input type="email" className='w-full block text-black mt-1 placeholder:text-stone-500 border-b-stone-500 border-b-[1px] pb-4 text-base outline-none' onChange={(e)=>setForm((prevState)=>({...prevState, email : e.target.value}))} value={Form.email} id="email" placeholder='xyz@gmail.com' />
             </div>
