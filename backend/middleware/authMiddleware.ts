@@ -29,9 +29,7 @@ const verifyUser = async (req : Request, res : Response, next : NextFunction): P
             }
         })
     }else{
-        console.log("Token not found")
-        console.log("Token: ", token)
-        console.log(res.cookie)
+        console.log("Cookie", res.cookie)
         res.status(401).json({error : "Token not found"})
     }
 }
@@ -52,9 +50,7 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
                 next()
     }})}
     else{
-        console.log("User not authenticated")
-        console.log("Token: ", token)
-        console.log(res.cookie)
+        console.log("Cookie", res.cookie)
         res.status(401).json({err : "user not authenticated", redirect : '/'})
         next();
     }
