@@ -29,12 +29,12 @@ const Login = () => {
         navigate("/account");
         toast.dismiss(toastId)
         toast.info("Logged in successfully")
+      }else{
+        toast.info(response.data.message)
       }
     } catch (error: any) {
       // Handle backend error message
         console.error(error.response.data.error);
-        setMessage(error.response.data.error);
-        toast.info(error.response.data.error);
       
     }
     
