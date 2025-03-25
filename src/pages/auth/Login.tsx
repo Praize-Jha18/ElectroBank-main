@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useState} from "react"
 import axios from'axios';
-import { toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer, Id } from "react-toastify";
 
 
 const Login = () => {
+  
+
   const [message, setMessage] = useState("")
   const [Form, setForm] = useState({
     email : "",
@@ -14,6 +16,10 @@ const Login = () => {
   const handleSubmit = async (e : React.FormEvent)=>{
     e.preventDefault();
     try {
+      const toastId: Id = toast.info("Please wait, verifying user...", {
+        autoClose: false,
+        closeOnClick: false,
+      });
       const response = await axios.post("https://electrobank-main.onrender.com/login", Form, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -21,22 +27,15 @@ const Login = () => {
     
       if (response.status === 201) {
         navigate("/account");
-      }else{
-        setMessage(response.data.message);
+        toast.dismiss(toastId)
+        toast.info("Logged in successfully")
       }
     } catch (error: any) {
-      
-      if (error.response) {
-        // Handle backend error message
+      // Handle backend error message
         console.error(error.response.data.error);
         setMessage(error.response.data.error);
-        toast.error(error.response.data.error);
-      } else {
-        // Handle network or unexpected errors
-        console.error(error.message);
-        setMessage(error.message);
-        toast.error(error.message);
-      }
+        toast.info(error.response.data.error);
+      
     }
     
 

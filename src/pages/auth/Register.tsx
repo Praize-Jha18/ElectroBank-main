@@ -6,6 +6,7 @@ import Select from "react-select";
 import countryList from "react-select-country-list";
 import customSelectStyles from "../useronly/customStyle";
 import axios from 'axios'
+import { toast, ToastContainer, Id } from "react-toastify";
 
 const Register = () => {
   const [message, setMessage] = useState("")
@@ -74,13 +75,19 @@ const Register = () => {
     console.log("Form data:", formState);
     e.preventDefault();
     try {
+      const toastId: Id = toast.info("Creating user...", {
+        autoClose: false,
+        closeOnClick: false,
+      });
       const response = await axios.post("https://electrobank-main.onrender.com/signup", formState, {
           headers: { "Content-Type": "application/json" },
           withCredentials : true
       });
 
       if (response.status === 201) {
+        toast.dismiss(toastId)
           navigate("/account");
+
       } else {
           console.error(response.data.error);
           setMessage(response.data.error);
@@ -96,6 +103,7 @@ const Register = () => {
 
   return (
     <>
+    <ToastContainer />
       <div className="bg-sky-500 flex items-center h-16 px-8 fixed w-full font-poppins justify-between z-50">
         <div className="flex justify-center flex-grow">
           <p className="text-white text-xl">EliteOceanic Savings</p>

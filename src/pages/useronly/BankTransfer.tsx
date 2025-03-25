@@ -45,6 +45,7 @@ interface Transaction {
                 }
             }).catch((err)=>{
                 console.log(err)
+                setMessage(err)
             }) 
         }catch(err){
             console.log(err)

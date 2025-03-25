@@ -18,9 +18,9 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
         if(!user){
             res.status(404).json({ error: "User not found" });
         }else{
-            const beneficiary = await User.findOne({acc_num : beneficiary_acc_num})
+            const beneficiary = await User.findOne({acc_num : beneficiary_acc_num, name : beneficiary_name})
             if(!beneficiary){
-                res.status(500).json({error : "Account not found"})
+                res.status(402).json({error : "Account not found"})
             }
              // Check if user has enough balance
             if (user.current_balance < amountNumber) {

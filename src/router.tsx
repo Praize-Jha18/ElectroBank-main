@@ -8,6 +8,7 @@ import Footer from './components/footer/Footer';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ChatraComponent from './ChatraComponent';
+import NotFound from './reusables/NotFound';
 
 
 const About = lazy(() => import('./pages/About'));
@@ -169,6 +170,15 @@ const router = createBrowserRouter([
             },
         ]
 
+    },
+    {
+        path: '*',
+        element: (
+            <>
+                <TitleUpdater />
+                <NotFound />
+            </>
+        )
     }
 ]);
 export default router;
