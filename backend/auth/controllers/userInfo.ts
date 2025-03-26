@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import multer from 'multer'
 import path from 'path'
 
-import { error } from 'console';
 import models from '../../database/model'
 
 const { User } = models;
