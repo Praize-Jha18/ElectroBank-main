@@ -13,7 +13,7 @@ import flash from "connect-flash";
 import session from "express-session";
 import authRoute from "./auth/routes/auth"
 import { key } from './auth/controllers/token'
-import exp from "constants";
+
 
 const app = express();
 
@@ -29,7 +29,8 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(flash());
-app.use('/images', express.static('public/images'));
+app.use(express.static('public'))
+
 //=============================== SESSION CONFIG
 app.use(
     session({
