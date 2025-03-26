@@ -336,7 +336,7 @@ const AccountIndex = () => {
             />
           </Link>
           <Link to={"./profile"}>
-            {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[40%] w-20%] object-contain rounded-lg" /> : <FontAwesomeIcon
+            {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[5%] w-[5%] object-contain rounded-lg" /> : <FontAwesomeIcon
               icon={faUser}
               className="text-[#27173E] h-6 pl-6  max-mdPhone:pl-5 max-mdPhone:h-5"
             />}

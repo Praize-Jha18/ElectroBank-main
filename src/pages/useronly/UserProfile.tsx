@@ -171,7 +171,7 @@ const UserProfile = () => {
       <h6>{message}</h6>
       <div className="body bg-slate-100 font-poppins pt-24 pb-24 px-6">
         <div className=" dfAc">
-          <picture className="p-2 w-[30%] h-[30%] rounded-full shadow-[0_0_15px_rgba(0,0,0,.1)] ">
+          <picture className="p-2 w-[10%] h-[10%] rounded-full shadow-[0_0_15px_rgba(0,0,0,.1)] ">
           <img src={image ? `https://electrobank-main.onrender.com/images/${image}` : img} className="w-[100%] rounded-full" />
           </picture>
          <Link to={'../upload-picture'}><h2>Change profile picture</h2></Link>
