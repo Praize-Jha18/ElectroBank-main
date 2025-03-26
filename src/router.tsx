@@ -167,17 +167,21 @@ const router = createBrowserRouter([
             },
             {
                 path: "profile",
-                element: <UserProfile />
+                element: <UserProfile />,
+                children: [
+                    {
+                        path: "upload-picture",
+                        element: (
+                            <>
+                                <TitleUpdater />
+                                <AddProfilePicture />
+                            </>
+                        )
+                    }
+                ]
+
+
             },
-            {
-                path:"upload-picture",
-                element :(
-                    <>
-                        <TitleUpdater />
-                        <AddProfilePicture />
-                    </>
-                )
-            }
         ]
 
     },
