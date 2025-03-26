@@ -36,7 +36,6 @@ const UserProfile = () => {
     axios.get('https://electrobank-main.onrender.com/getUpload', {withCredentials : true})
     .then((res) => {
       setImage(res.data.profile_picture)
-      console.log(res.data.profile_picture)
     })
     .catch(err => console.log(err))
 },[])
@@ -173,7 +172,7 @@ const UserProfile = () => {
       <div className="body bg-slate-100 font-poppins pt-24 pb-24 px-6">
         <div className=" dfAc">
           <picture className="p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,.1)] ">
-          <img src={image ? `https://electrobank-main.onrender.com/images/${image}` : img} alt="Avatar" className="h-24 w-24" />           
+          <img src={image ? `https://electrobank-main.onrender.com/images/`+image : img} alt="Avatar" className="h-24 w-24" />           
           </picture>
          <Link to={'../upload-picture'}><h2>Change profile picture</h2></Link>
         </div>
