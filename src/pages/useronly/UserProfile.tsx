@@ -34,7 +34,10 @@ const UserProfile = () => {
   // Getting profile picture from db
   useEffect(()=>{
     axios.get('https://electrobank-main.onrender.com/getUpload', {withCredentials : true})
-    .then((res) => setImage(res.data.profile_picture))
+    .then((res) => {
+      setImage(res.data.profile_picture)
+      console.log(res.data.profile_picture)
+    })
     .catch(err => console.log(err))
 },[])
 

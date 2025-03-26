@@ -1,5 +1,6 @@
 import { useState } from "react"
 import axios from 'axios'
+import { toast, ToastContainer } from "react-toastify";
 function AddProfilePicture() {
     const [file, setFile] = useState(null)
    
@@ -12,12 +13,16 @@ function AddProfilePicture() {
         }
         formdata.append('file', file)
          axios.post( 'https://electrobank-main.onrender.com/upload-pfp', formdata, {withCredentials : true})
-         .then((res =>console.log(res)))
-         .catch(err=>console.log(err))
+         .then((res => toast.success(res.data.message)))
+         .catch(err=>{
+            console.log(err)
+            toast.error(err.message)
+        })
     }
 
   return (
     <>
+    <ToastContainer/>
     <div className="w-[90%] mx-auto mt-10 flex flex-col items-center">
         <h1 className="text-center text-[40px]">Upload picture</h1>
         <input type="file" className="mt-10 w-[50%] mx-auto" onChange={(e: any) => setFile(e.target.files[0])} /><br />
