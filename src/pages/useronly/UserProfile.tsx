@@ -172,7 +172,7 @@ const UserProfile = () => {
             <img src={image ? `https://electrobank-main.onrender.com${image}` : img} alt="Avatar" className="h-24 w-24" /> 
            
           </picture>
-         <Link to={'./upload-picture'}><h2>Change profile picture</h2></Link>
+         <Link to={'../upload-picture'}><h2>Change profile picture</h2></Link>
         </div>
         <div className="details shadow-[0_0_15px_rgba(0,0,0,.1)] px-4 mt-8 rounded-xl">
           {userDetails.map((v, i) => (
