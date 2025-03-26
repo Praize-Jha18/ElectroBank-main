@@ -9,6 +9,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ChatraComponent from './ChatraComponent';
 import NotFound from './reusables/NotFound';
+import AddProfilePicture from './pages/useronly/AddProfilePicture';
 
 
 const About = lazy(() => import('./pages/About'));
@@ -168,6 +169,15 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: <UserProfile />
             },
+            {
+                path:"upload-picture",
+                element :(
+                    <>
+                        <TitleUpdater />
+                        <AddProfilePicture />
+                    </>
+                )
+            }
         ]
 
     },

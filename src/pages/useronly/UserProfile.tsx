@@ -7,7 +7,7 @@ import { CheckmarkCircleOutline, CloseCircleOutline } from "react-ionicons";
 import UserNavbar from "./UserNavbar";
 import img from "../../assets/avatar1.png";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer, Id } from "react-toastify";
 
 const UserProfile = () => {
@@ -23,6 +23,7 @@ const UserProfile = () => {
   // Creating state to store profile changes
   const [profileChange, setProfileChange] = useState<UserUpdated>({} as UserUpdated);
   const [message, setMessage] = useState("")
+  const [image, setImage] = useState()
 
   const handleChange = (e: any) => {
     const name = e.target.name;
@@ -30,6 +31,13 @@ const UserProfile = () => {
 
     setProfileChange((values) => ({ ...values, [name]: value }));
   };
+  // Getting profile picture from db
+  useEffect(()=>{
+    axios.get('https://electrobank-main.onrender.com/getUpload', {withCredentials : true})
+    .then((res) => setImage(res.data.profile_picture))
+    .catch(err => console.log(err))
+},[])
+
   const submitForm = async () => {
     await axios
       .post<UserUpdated>("https://electrobank-main.onrender.com/editprofile", profileChange, {
@@ -161,8 +169,10 @@ const UserProfile = () => {
       <div className="body bg-slate-100 font-poppins pt-24 pb-24 px-6">
         <div className=" dfAc">
           <picture className="p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,.1)] ">
-            <img src={img} alt="Avatar" className="h-24 w-24" />
+            <img src={image ? `https://electrobank-main.onrender.com${image}` : img} alt="Avatar" className="h-24 w-24" /> // where the picture will go
+           
           </picture>
+         <Link to={'./upload-picture'}> <h2>Change profile picture</h2></Link>
         </div>
         <div className="details shadow-[0_0_15px_rgba(0,0,0,.1)] px-4 mt-8 rounded-xl">
           {userDetails.map((v, i) => (

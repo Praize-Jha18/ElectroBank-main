@@ -1,10 +1,24 @@
 import {Response , Request} from 'express'
 import bcrypt from "bcrypt";
+import multer from 'multer'
+import path from 'path'
 
 import { error } from 'console';
 import models from '../../database/model'
 
 const { User } = models;
+
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, 'public/images' )
+    },
+    filename : (req, file, cb) =>{
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+const uploadPicture = multer({
+    storage
+}) 
 
 const editProfile = async  (req : Request, res : Response) =>{
     const {lastName, firstName, occupation, phone, email} = req.body
@@ -55,4 +69,49 @@ const changePassword = async (req : Request, res : Response)=>{
     
 }
 
-export default {editProfile, changePassword}
+const upload = async (req: Request, res: Response): Promise<void>=>{
+    console.log(req.file)
+    
+    
+    try{
+        const user = res.locals.user
+        if (user) {
+            const getUser = await User.findById(user);
+            if (getUser) {
+                if (req.file?.filename) {
+                    getUser.profile_photo = req.file.filename; // Store relative path
+                    await getUser.save();
+                    res.status(200).json({ message: "Profile photo updated successfully" });
+                } else {
+                    res.status(400).json({ error: "No file uploaded" });
+                }
+            }    
+        }else{
+            res.status(401).json({ error: "User not authenticated" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
+const getUpload = async (req: Request, res: Response)=>{
+    try{
+        const userID = res.locals.user || ""
+        const user = await User.findById(userID)
+        if(user){
+            const profile_picture = user?.profile_photo
+            res.status(201).json({profile_picture})
+        }else{
+            res.status(401).json({ error: "Couldn't upload file, User not logged in" });
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({ error: "Server error" });
+    }
+  
+
+
+}
+
+export default {editProfile, changePassword, upload, uploadPicture, getUpload}

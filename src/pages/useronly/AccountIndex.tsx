@@ -252,6 +252,13 @@ const AccountIndex = () => {
   const [user, setUser] = useState<User | null>(null);
   const [creditTransac, setCreditTransac] = useState([]);
   const [debitTransac, setDebitTransac] = useState([]);
+  const [image, setImage] = useState()
+
+  useEffect(()=>{
+    axios.get('https://electrobank-main.onrender.com/getUpload', {withCredentials : true})
+    .then((res) => setImage(res.data.profile_picture))
+    .catch(err => console.log(err))
+},[])
 
   useEffect(() => {
     const toastId: Id = toast.info("Please wait, fetching user data...", {
@@ -329,10 +336,12 @@ const AccountIndex = () => {
             />
           </Link>
           <Link to={"./profile"}>
-            <FontAwesomeIcon
+            {image ? <img src={`https://electrobank-main.onrender.com${image}`} alt="Avatar" className="h-24 w-24 rounded-md" /> : <FontAwesomeIcon
               icon={faUser}
               className="text-[#27173E] h-6 pl-6  max-mdPhone:pl-5 max-mdPhone:h-5"
-            />
+            />}
+            
+
           </Link>
         </div>
         <div

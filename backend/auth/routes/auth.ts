@@ -18,6 +18,8 @@ router.get('/getUser', verifyUser)
 //================  User profile Route
 router.post('/editprofile',requireAuth , userInfoController.editProfile)
 router.post('/password', requireAuth, userInfoController.changePassword)
+router.post('/upload-pfp',requireAuth, userInfoController.uploadPicture.single('file'), userInfoController.upload)
+router.get('/getUpload',requireAuth,userInfoController.getUpload)
 
 //================ Transaction Route
 router.post('/transfer',requireAuth, transaction.bankTransfer)
