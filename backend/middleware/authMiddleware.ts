@@ -58,7 +58,7 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
 
 const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwt
-    
+    console.log(token)
     try {
         if(token){
             jwt.verify(token, key, async (err : any, decodedToken: any)=>{

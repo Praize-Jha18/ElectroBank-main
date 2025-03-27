@@ -41,7 +41,8 @@ app.use(
       cookie: { secure: false }, // Set `secure: true` if using HTTPS
     })
   ); 
-
+//=============================== ROUTES PAGES LOADED
+app.use(authRoute)
 //=============================== ROUTES
 // Apply CORS middleware to each route individually
 app.use("/auth", cors(), authRoute);
@@ -57,8 +58,7 @@ mongoose.connect(dbiUri)
 
 //=============================== STATIC PAGES LOADER
 app.use(express.static(path.join(__dirname, "../dist")));
-//=============================== ROUTES PAGES LOADED
-app.use(authRoute)
+
 
 
 

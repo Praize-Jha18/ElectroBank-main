@@ -108,15 +108,14 @@ const router = createBrowserRouter([
                 path: 'ways-to-bank',
                 element: <WaysToBank />,
             },
-            {
-                path: 'admin',
-                element: (
-                    <AdminDashboard />
-                ),
-            },
-
 
         ],
+    },
+    {
+        path: 'admin',
+        element: (
+            <AdminDashboard />
+        ),
     },
     {
         path: "account", element: <AccountIndex />
