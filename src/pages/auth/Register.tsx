@@ -91,6 +91,8 @@ const Register = () => {
 
       } else {
           console.error(response.data.error);
+          toast.dismiss(toastId)
+          toast.error(response.data.error)
           setMessage(response.data.error);
       }
   } catch (error: any) {
@@ -113,8 +115,9 @@ const Register = () => {
           <FontAwesomeIcon icon={faUser} className="text-[#27173E] h-8" />
         </Link>
       </div>
-      <h1>{message}</h1>
+     
       <div className="body bg-slate-100 font-poppins pt-24 pb-10">
+      <h1>{message}</h1>
         <h1 className="text-[#27173E] text-3xl text-center font-semibold">Register Now</h1>
         <form className="px-4" method="post" onSubmit={handleSubmit}>
           {/* First Name */}
