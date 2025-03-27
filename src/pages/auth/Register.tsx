@@ -24,6 +24,7 @@ const Register = () => {
     address : "",
     phoneNumber : "",
     dob : "",
+    transaction_pin : "",
     selectedCountry: null,
     selectedCurrency: { value: 'naira', label: 'Naira' },
     selectedMaritalStatus: { value: 'single', label: 'Single' },
@@ -147,6 +148,10 @@ const Register = () => {
           <div className='mt-4'>
             <label htmlFor="phoneNumber" className='text-[#27173E] text-xs'>Phone Number</label>
             <input type="tel" className='registerInputStyle' id="phoneNumber"  onChange={(e)=>setFormState((prevState)=>({...prevState, phoneNumber : e.target.value}))} value={formState.phoneNumber} placeholder='080 123 456 789' />
+          </div>
+          <div className='mt-4'>
+            <label htmlFor="pin" className='text-[#27173E] text-xs'>Transaction pin</label>
+            <input type="password" className='registerInputStyle' maxLength={4} id="pin"  onChange={(e)=>setFormState((prevState)=>({...prevState, transaction_pin : e.target.value}))} value={formState.transaction_pin} placeholder='****' />
           </div>
           <div className='mt-4'>
             <label htmlFor="email" className='text-[#27173E] text-xs'>Email</label>

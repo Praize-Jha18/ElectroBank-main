@@ -56,6 +56,21 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
     }
 }
 
-const authMiddleware = { verifyUser, requireAuth };
+const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = res.locals.user// Assuming user ID is stored in req.user after authentication
+        if (!userId) res.status(401).json({ error: 'Unauthorized' });
+
+        const user = await User.findById(userId);
+        if (!user || user.role !== 'admin') {
+            res.status(403).json({ error: 'Access denied. Admins only.' });
+        }
+
+        next();
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+const authMiddleware = { verifyUser, requireAuth, adminAuth };
 
 export default authMiddleware;

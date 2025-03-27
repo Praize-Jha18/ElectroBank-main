@@ -13,6 +13,7 @@ interface Transaction {
     beneficiary_name: string;
     beneficiary_acc_num: string;
     reference: string;
+    transaction_pin : string;
 }
 
     const [selectedAccountType, setSelectedAccountType] = useState('');
@@ -58,7 +59,9 @@ interface Transaction {
         setForm({   amount: "",
             beneficiary_name: "",
             beneficiary_acc_num: "",
-            reference: ""});
+            reference: "",
+            transaction_pin : ""
+        });
     }
 
 
@@ -123,6 +126,10 @@ interface Transaction {
                     <div className='mt-4'>
                         <label htmlFor="accountNumber" className='text-[#27173E] text-xs'>Beneficiary Account Number</label>
                         <input type="text" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="accountNumber" placeholder='Beneficiary Account Number' required  name='beneficiary_acc_num' onChange={handleFormChange} value={form.beneficiary_acc_num || ""} />
+                    </div>
+                    <div className='mt-4'>
+                        <label htmlFor="pin" className='text-[#27173E] text-xs'>Transaction Pin</label>
+                        <input type="password" className='w-full block text-black mt-1 placeholder:text-stone-500 bg-slate-100 border-b-stone-500 border-b-[1px] h-10 text-base outline-none' id="pin" placeholder='Transaction pin' required  name='beneficiary_acc_num' onChange={handleFormChange} value={form.transaction_pin || ""} />
                     </div>
                     <div className='mt-4'>
                         <label htmlFor="description" className='text-[#27173E] text-xs'>Description</label>

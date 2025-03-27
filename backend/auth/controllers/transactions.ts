@@ -1,14 +1,14 @@
 
 import {Request, Response } from 'express'
 import models from '../../database/model'
-
+import bcrypt from "bcrypt";
 const { User, Transaction } = models;
 
 import mongoose from 'mongoose';
 
 const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
     const  {form, account_type} = req.body
-    const {amount, reference, beneficiary_acc_num, beneficiary_name} = form
+    const {amount, reference, beneficiary_acc_num, transaction_pin , beneficiary_name} = form
     const userID = res.locals.user
 
     const amountNumber = Number(amount)
@@ -19,16 +19,24 @@ const bankTransfer =  async (req: Request, res : Response): Promise<void>=>{
             res.status(404).json({ error: "User not found" });
         }else{
             const beneficiary = await User.findOne({acc_num : beneficiary_acc_num, name : beneficiary_name})
+            const isPin = await bcrypt.compare(transaction_pin, user.transaction_pin);
             if(!beneficiary){
                 res.status(402).json({error : "Account not found"})
+            }
+            
+
+            if(!isPin){
+                res.status(403).json({error : "Invalid Pin, Try again"})
             }
              // Check if user has enough balance
             if (user.current_balance < amountNumber) {
                 res.status(401).json({ error: "Insufficient funds" });
+            }else{
+                // Deduct from sender
+                user.current_balance -= amountNumber;
             }
 
-            // Deduct from sender
-            user.current_balance -= amountNumber;
+           
 
             // Add to beneficiary (only if found)
         if (beneficiary) {

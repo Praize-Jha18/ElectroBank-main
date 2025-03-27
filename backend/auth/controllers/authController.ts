@@ -31,40 +31,41 @@ const calculateAge = (dob: string): number => {
 };
 // ======================== SIGNUP SERVER
 const signup = async (req: Request, res: Response): Promise<void> =>{
-    const {firstName, lastName, occupation , username, address, password, email, phoneNumber, dob, selectedCountry,  selectedCurrency, selectedMaritalStatus, selectedGender, selectedAccountType} = req.body
+    const {firstName, lastName, occupation ,transaction_pin, username, address, password, email, phoneNumber, dob, selectedCountry,  selectedCurrency, selectedMaritalStatus, selectedGender, selectedAccountType} = req.body
     try{
          // Ensure user doesn't already exist
          const existingUser = await User.findOne({ email});
          if (existingUser) {
             res.status(400).json({ error: "User already exists" });
+        }else{
+            const user = await User.create({
+                name : firstName + " " +lastName,
+                age : calculateAge(dob),
+                country : selectedCountry?.value,
+                address : address,
+                user_name : username,
+                password : password,
+                DOB : dob,
+                account_currency: selectedCurrency?.value, 
+                account_type: selectedAccountType?.value, 
+                email: email,
+                transaction_pin : transaction_pin,
+                occupation : occupation,
+                gender: selectedGender?.value, 
+                marital_status: selectedMaritalStatus?.value, 
+                phone: phoneNumber,
+                
+                current_balance :Acc_no(6) ,
+                acc_num: Acc_no(8), 
+                activated: true,
+            })
+    
+            console.log("✅ User Created:", user); 
+            const token = createToken(String(user._id));
+            res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000, sameSite: "none", secure: true });
+    
+            res.status(201).json({user, message : 'Successful signup'});
         }
-
-        const user = await User.create({
-            name : firstName + " " +lastName,
-            age : calculateAge(dob),
-            country : selectedCountry?.value,
-            address : address,
-            user_name : username,
-            password : password,
-            DOB : dob,
-            account_currency: selectedCurrency?.value, 
-            account_type: selectedAccountType?.value, 
-            email: email,
-            occupation : occupation,
-            gender: selectedGender?.value, 
-            marital_status: selectedMaritalStatus?.value, 
-            phone: phoneNumber,
-            
-            current_balance :Acc_no(6) ,
-            acc_num: Acc_no(8), 
-            activated: true,
-        })
-
-        console.log("✅ User Created:", user); 
-        const token = createToken(String(user._id));
-        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000, sameSite: "none", secure: true });
-
-        res.status(201).json({user, message : 'Successful signup'});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Server error" });

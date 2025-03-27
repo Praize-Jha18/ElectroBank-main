@@ -11,6 +11,8 @@ import ChatraComponent from './ChatraComponent';
 import NotFound from './reusables/NotFound';
 import AddProfilePicture from './pages/useronly/AddProfilePicture';
 
+import AdminDashboard from './pages/useronly/AdminDashboard';
+
 
 const About = lazy(() => import('./pages/About'));
 const ContactUs = lazy(() => import('./pages/ContactUs'));
@@ -105,6 +107,12 @@ const router = createBrowserRouter([
             }, {
                 path: 'ways-to-bank',
                 element: <WaysToBank />,
+            },
+            {
+                path: 'admin',
+                element: (
+                    <AdminDashboard />
+                ),
             },
 
 

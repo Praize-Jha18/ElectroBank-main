@@ -236,6 +236,7 @@ const AccountIndex = () => {
     current_balance: string;
     account_currency: string;
     account_type: string;
+    role: string;
   }
   interface Transaction {
     date: string;
@@ -335,6 +336,7 @@ const AccountIndex = () => {
               className="text-white h-6  max-mdPhone:h-5"
             />
           </Link>
+          {user?.role === 'admin' && <Link to="/admin">Admin Dashboard</Link>}
           <Link to={"./profile"}>
             {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[5%] w-[5%] object-contain rounded-lg" /> : <FontAwesomeIcon
               icon={faUser}

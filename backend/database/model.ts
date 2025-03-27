@@ -23,7 +23,9 @@ interface IUser extends Document {
   profile_photo?: string;
   acc_num: string;
   activated: boolean;
+  transaction_pin:string;
   last_login?: Date;
+  role: 'admin' | 'user';
 }
 
 interface Transaction extends Document{
@@ -85,18 +87,21 @@ const userSchema = new Schema<IUser>({
   current_balance: { type: Number, required: true },
   profile_photo: { type: String, default: "" },
   acc_num: { type: String, required: true, unique: true},
+  transaction_pin : {type: String, required:true},
   activated: { type: Boolean, default: false },
   last_login: { type: Date },
+  role: { type: String, enum: ['admin', 'user'], default: 'user', required: true },
 });
 
 // =================== HASHING PASSWORDS WITH MONGOOSE HOOKS
 userSchema.pre("save", async function (next) {
   const user = this as IUser;
   if (!user.isModified("password")) return next();
-
+  if (!user.isModified("transaction_pin")) return next();
   try {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
+    user.transaction_pin = await bcrypt.hash(user.transaction_pin, salt);
     next();
   } catch (err) {
     console.log(err);

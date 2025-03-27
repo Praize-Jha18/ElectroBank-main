@@ -4,8 +4,9 @@ import userInfoController from '../controllers/userInfo';
 import authMiddleware from '../../middleware/authMiddleware';
 import transaction from '../controllers/transactions';
 import transacHistory from '../controllers/history'
+import admin from '../controllers/admin'
 
-const { verifyUser, requireAuth } = authMiddleware;
+const { verifyUser, requireAuth, adminAuth } = authMiddleware;
 
 const router = express.Router()
 
@@ -27,6 +28,9 @@ router.post('/transfer',requireAuth, transaction.bankTransfer)
 //=============== History Route
 router.get('/transact-statement',requireAuth, transacHistory.transac)
 router.post('/support',requireAuth, transacHistory.support)
+
+//=============== Admin Route
+router.get('/admin', adminAuth, admin.allUsers)
 
 
 
