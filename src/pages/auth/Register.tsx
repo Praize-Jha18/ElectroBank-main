@@ -91,12 +91,11 @@ const Register = () => {
 
       } else {
           console.error(response.data.error);
-          toast.dismiss(toastId)
-          toast.error(response.data.error)
-          setMessage(response.data.error);
+          // setMessage(response.data.error);
       }
   } catch (error: any) {
       console.error(error);
+      toast.error(error.response.data.error)
       setMessage(error.response?.data?.error || "Something went wrong");
   }
   }
