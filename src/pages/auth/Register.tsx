@@ -77,7 +77,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const toastId: Id = toast.info("Creating user...", {
-        autoClose: false,
+        autoClose: true,
         closeOnClick: false,
       });
       const response = await axios.post("https://electrobank-main.onrender.com/signup", formState, {
@@ -95,7 +95,7 @@ const Register = () => {
       }
   } catch (error: any) {
       console.error(error);
-      toast.error(error.response.data.error)
+      toast.error(error.response.data.error,{autoClose :false})
       setMessage(error.response?.data?.error || "Something went wrong");
   }
   }

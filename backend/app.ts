@@ -22,7 +22,8 @@ app.use(
   cors({
     origin: "https://electrobank-main-1.onrender.com", // Allow frontend requests
     credentials: true, // Allow cookies if needed
-    // allowedHeaders: ["Content-Type", "Authorization"], 
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 app.use(express.json())
@@ -41,6 +42,10 @@ app.use(
     })
   ); 
 
+//=============================== ROUTES
+// Apply CORS middleware to each route individually
+app.use("/auth", cors(), authRoute);
+
 //=============================== DATABASE CONFIG
 const port = 3000;
 const dbiUri = 'mongodb+srv://praisejahfrancis:peejay@peejaycluster.ccu0cf5.mongodb.net/EliteOceanicSavings?retryWrites=true&w=majority&appName=peejaycluster'
@@ -54,6 +59,8 @@ mongoose.connect(dbiUri)
 app.use(express.static(path.join(__dirname, "../dist")));
 //=============================== ROUTES PAGES LOADED
 app.use(authRoute)
+
+
 
 
 
