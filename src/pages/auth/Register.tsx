@@ -77,7 +77,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const toastId: Id = toast.info("Creating user...", {
-        autoClose: true,
+        autoClose: 10000,
         closeOnClick: false,
       });
       const response = await axios.post("https://electrobank-main.onrender.com/signup", formState, {
