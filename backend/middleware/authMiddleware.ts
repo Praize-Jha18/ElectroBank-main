@@ -57,16 +57,26 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
 }
 
 const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies.jwt
+    
     try {
-        const userId = res.locals.user
-        if (!userId) res.status(401).json({ error: 'Unauthorized' });
-
-        const user = await User.findById(userId);
-        if (!user || user.role !== 'admin') {
-            res.status(403).json({ error: 'Access denied. Admins only.' });
+        if(token){
+            jwt.verify(token, key, async (err : any, decodedToken: any)=>{
+                if(err){
+                    console.log(err)
+                    res.json({error : "Invalid Token"})
+                    next()
+                }else{
+                    const user = await User.findById(decodedToken.id);
+                    if (!user || user.role !== 'admin') {
+                        res.status(404).json({ error: "User not found" });
+                    } else {
+                        res.locals.user = user
+                        next();
+                    }
+                }
+            })
         }
-
-        next();
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

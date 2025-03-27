@@ -6,14 +6,14 @@ const { User, Transaction } = models;
 
 const allUsers = async (req: Request, res : Response)=>{
     try{
-        const user = await User.find({})  || [];
+        const users = await User.find({})  || [];
         const transaction = await Transaction.find({}) || []
        
 
-        if(user.length == 0 && transaction.length == 0){
+        if(users.length == 0 && transaction.length == 0){
             res.status(202).json({ message: "No User..." });
         }else{
-            res.status(200).json({user, transaction})
+            res.status(200).json({users, transaction})
         }
 
     }catch(err){

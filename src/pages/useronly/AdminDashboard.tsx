@@ -47,18 +47,17 @@ function AdminDashboard() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get('https://electrobank-main.onrender.com/admin',  { withCredentials: true })
-        .then((res)=>{
-           if(res.status === 200){
-            setIsAdmin(true)
-            console.log(res.data.user)
-            console.log(res.data.transaction)
-           }
-        })
-        .catch((error)=>{
-          console.log(error)
-          navigate('/auth/login')
-        })
+      axios.get("https://electrobank-main.onrender.com/admin", { withCredentials: true })
+      .then((res) => {
+          if (res.status === 200) {
+              setIsAdmin(true);
+          }
+      })
+      .catch((error) => {
+          console.error("Admin access error:", error.response?.data || error);
+          setIsAdmin(false);
+          navigate("/auth/login");
+      });
     },[])
     // console.log("Users", users, "Transaction", transactions)
     if (!isAdmin) return null;
