@@ -40,7 +40,7 @@ const transac = async (req : Request, res: Response):Promise<void> =>{
             }))
 
             if (sender_details.length === 0 && beneficiary_details.length === 0) {
-                res.status(200).json({ message: "No transactions found..." });
+                res.status(200).json({ message: "No transactions found...", beneficiary_details : [], sender_details : [] });
             }else{
                 res.status(202).json({beneficiary_details, sender_details})
             }  

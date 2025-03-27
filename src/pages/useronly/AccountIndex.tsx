@@ -307,13 +307,14 @@ const AccountIndex = () => {
     return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
   };
 
-  const getLatestTransactions = (transactions: Transaction[]): Transaction[] => {
+  const getLatestTransactions = (transactions?: Transaction[]): Transaction[] => {
+    if (!transactions || transactions.length === 0) return [];
     return transactions
       .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
       .slice(0, 3); // Get the latest 3 transactions
   };
-  const latestCreditTransaction = getLatestTransactions(creditTransac);
-  const latestDebitTransaction = getLatestTransactions(debitTransac)
+  const latestCreditTransaction = creditTransac ?  getLatestTransactions(creditTransac) : []
+  const latestDebitTransaction = debitTransac ?  getLatestTransactions(debitTransac) : []
 
   const [nav, showNav] = useState<boolean>(false);
   return (
@@ -483,7 +484,7 @@ const AccountIndex = () => {
           <h1 className="font-poppins font-medium mb-2 ">Recent Credit transaction</h1>
           <Link to={'/account/account-statement'}><h1>View all</h1></Link>
           </div>
-          {latestCreditTransaction.length > 0 ? (
+          {creditTransac && latestCreditTransaction.length > 0 ? (
             <div className="w-full h-auto py-5 bg-white">
               {latestCreditTransaction.map((transac: Transaction, index: number) => (
                 <div
@@ -545,7 +546,7 @@ const AccountIndex = () => {
           <Link to={'/account/account-statement'}><h1>View all</h1></Link>
           </div>
          
-          {latestCreditTransaction.length > 0 ? (
+          {debitTransac && latestCreditTransaction.length > 0 ? (
             <div className="w-full h-auto py-5 bg-white">
               {latestDebitTransaction.map((transac: Transaction, index: number) => (
                 <div
