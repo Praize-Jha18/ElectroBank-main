@@ -307,13 +307,19 @@ const AccountIndex = () => {
     return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
   };
 
-  const getLatestTransactions = (transactions: Transaction[]): Transaction[] => {
-    return transactions
+  const getLatestTransactions = (transactions?: Transaction[]): Transaction[] | string => {
+    if (!transactions || transactions.length === 0) {
+      return "No transactions available";
+    }
+    return [...transactions]
       .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
-      .slice(0, 3); // Get the latest 3 transactions
+      .slice(0, 3);
   };
+  
   const latestCreditTransaction = getLatestTransactions(creditTransac);
-  const latestDebitTransaction = getLatestTransactions(debitTransac)
+  const latestDebitTransaction = getLatestTransactions(debitTransac);
+  
+ 
 
   const [nav, showNav] = useState<boolean>(false);
   return (
