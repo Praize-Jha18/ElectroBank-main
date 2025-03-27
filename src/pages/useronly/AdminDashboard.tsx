@@ -53,6 +53,8 @@ function AdminDashboard() {
             setIsAdmin(true)
             console.log(res.data.user)
             console.log(res.data.transaction)
+            setTransactions(res.data.transaction)
+            setUsers(res.data.user)
            }
         })
         .catch((error)=>{
