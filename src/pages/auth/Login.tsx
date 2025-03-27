@@ -26,6 +26,7 @@ const Login = () => {
     
       if (response.status === 201) {
         const user = response.data.user?.role
+        console.log(user)
         if(user === 'admin'){
           navigate("/admin")
           toast.success("Logged in successfully")

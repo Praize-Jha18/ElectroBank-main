@@ -30,7 +30,7 @@ router.get('/transact-statement',requireAuth, transacHistory.transac)
 router.post('/support',requireAuth, transacHistory.support)
 
 //=============== Admin Route
-router.get('/admin', adminAuth, admin.allUsers)
+router.get('/admin',verifyUser,adminAuth, admin.allUsers)
 
 
 
