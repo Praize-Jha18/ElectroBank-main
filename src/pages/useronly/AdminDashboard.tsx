@@ -49,12 +49,10 @@ function AdminDashboard() {
     useEffect(()=>{
         axios.get('https://electrobank-main.onrender.com/admin',  { withCredentials: true })
         .then((res)=>{
-           if(res.status == 200){
+           if(res.status === 200){
             setIsAdmin(true)
             console.log(res.data.user)
             console.log(res.data.transaction)
-            setUsers(res.data.user)
-            setTransactions(res.data.transaction)
            }
         })
         .catch((error)=>{
