@@ -58,7 +58,7 @@ const requireAuth = (req : Request, res : Response, next : NextFunction) => {
 
 const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = res.locals.user// Assuming user ID is stored in req.user after authentication
+        const userId = res.locals.user
         if (!userId) res.status(401).json({ error: 'Unauthorized' });
 
         const user = await User.findById(userId);

@@ -47,7 +47,7 @@ function AdminDashboard() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get('https://electrobank-main.onrender.com/admin')
+        axios.get('https://electrobank-main.onrender.com/admin',  { withCredentials: true })
         .then((res)=>{
            if(res.status == 200){
             setIsAdmin(true)
@@ -59,7 +59,7 @@ function AdminDashboard() {
         })
         .catch((error)=>{
           console.log(error)
-          navigate('/login')
+          navigate('/auth/login')
         })
     },[])
     console.log("Users", users, "Transaction", transactions)

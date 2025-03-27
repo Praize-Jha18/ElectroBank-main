@@ -329,14 +329,14 @@ const AccountIndex = () => {
         <p className="text-white text-lg max-mdPhone:text-base">
           EliteOceanic Savings
         </p>
-        <div className="icons">
+        <div className="icons w-[60%]">
           <Link to={"./account-statement"}>
             <FontAwesomeIcon
               icon={faBell}
               className="text-white h-6  max-mdPhone:h-5"
             />
           </Link>
-          {user?.role === 'admin' && <Link to="/admin">Admin Dashboard</Link>}
+          {user?.role === 'admin' && <Link to="/admin"><h4 className="text-[14px] text-white">Admin Dashboard</h4></Link>}
           <Link to={"./profile"}>
             {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[5%] w-[5%] object-contain rounded-lg" /> : <FontAwesomeIcon
               icon={faUser}
