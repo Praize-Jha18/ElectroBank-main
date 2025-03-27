@@ -25,9 +25,14 @@ const Login = () => {
       });
     
       if (response.status === 201) {
-        navigate("/account");
-        toast.dismiss(toastId)
-        toast.success("Logged in successfully")
+        const user = response.data.user?.role
+        if(user === 'admin'){
+          navigate("/admin")
+          toast.success("Logged in successfully")
+        }else{
+          navigate("/account");
+          toast.dismiss(toastId)
+        }
       }
     } catch (err: any) {
       // Handle backend error message

@@ -307,19 +307,13 @@ const AccountIndex = () => {
     return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
   };
 
-  const getLatestTransactions = (transactions?: Transaction[]): Transaction[] | string => {
-    if (!transactions || transactions.length === 0) {
-      return "No transactions available";
-    }
+  const getLatestTransactions = (transactions: Transaction[]): Transaction[] => {
     return [...transactions]
       .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
-      .slice(0, 3);
+      .slice(0, 3); // Get the latest 3 transactions
   };
-  
   const latestCreditTransaction = getLatestTransactions(creditTransac);
-  const latestDebitTransaction = getLatestTransactions(debitTransac);
-  
- 
+  const latestDebitTransaction = getLatestTransactions(debitTransac)
 
   const [nav, showNav] = useState<boolean>(false);
   return (
@@ -342,7 +336,7 @@ const AccountIndex = () => {
               className="text-white h-6  max-mdPhone:h-5"
             />
           </Link>
-          {user?.role === 'admin' && <Link to="/admin"><h4 className="text-[14px] text-white">Admin Dashboard</h4></Link>}
+         
           <Link to={"./profile"}>
             {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[5%] w-[5%] object-contain rounded-lg" /> : <FontAwesomeIcon
               icon={faUser}
