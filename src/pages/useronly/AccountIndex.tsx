@@ -308,7 +308,7 @@ const AccountIndex = () => {
   };
 
   const getLatestTransactions = (transactions: Transaction[]): Transaction[] => {
-    return [...transactions]
+    return transactions
       .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
       .slice(0, 3); // Get the latest 3 transactions
   };
