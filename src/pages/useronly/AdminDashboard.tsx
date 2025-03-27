@@ -1,7 +1,7 @@
-import {useState, useEffect } from 'react'
+import {useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-
+import { useLocation } from 'react-router-dom';
 function AdminDashboard() {
   // interface User {
   //   name: string;
@@ -41,21 +41,21 @@ function AdminDashboard() {
   //   sender_acc_type: string;
   //   transaction_id: string;
   // }
-    const [isAdmin, setIsAdmin] = useState(false);
     // const [users, setUsers] = useState<User[]>([])
     // const [transactions, setTransactions] = useState<Transaction[]>([])
     const navigate = useNavigate();
+    const location = useLocation();
+    const isAdmin = location.state?.isAdmin || false; 
 
     useEffect(()=>{
       axios.get("https://electrobank-main.onrender.com/admin", { withCredentials: true })
       .then((res) => {
           if (res.status === 200) {
-              setIsAdmin(true);
+           console.log(res)
           }
       })
       .catch((error) => {
           console.error("Admin access error:", error.response?.data || error);
-          setIsAdmin(false);
           navigate("/auth/login");
       });
     },[])

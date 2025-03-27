@@ -6,7 +6,6 @@ import { toast, ToastContainer, Id } from "react-toastify";
 
 const Login = () => {
   
-  const [isAdmin, setIsAdmin] = useState(false);
   const [Form, setForm] = useState({
     email : "",
     password : ""
@@ -28,8 +27,7 @@ const Login = () => {
         const user = response.data.user?.role
         console.log(user)
         if(user === 'admin'){
-          setIsAdmin(true);
-          navigate("/admin")
+          navigate("/admin", { state: { isAdmin: true }})
           toast.success("Logged in successfully")
         }else{
           navigate("/account");
