@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { toast, ToastContainer , Id} from 'react-toastify';
 import { format } from "date-fns";
 import { useLocation } from 'react-router-dom';
-import { Pencil } from 'react-ionicons';
+import { Pencil, CloseCircle } from 'react-ionicons';
+import { FiMenu } from "react-icons/fi";
 function AdminDashboard() {
   interface User {
     name: string;
@@ -44,6 +45,7 @@ function AdminDashboard() {
     const [users, setUsers] = useState<User[]>([])
     const [transactions, setTransactions] = useState<Transaction[]>([])
     const [showMore, setShowMore] = useState(false)
+    const [showNav, setShowNav] = useState(false)
     const [showPage, setShowPage] = useState("user")
     const [editedBalance, setEditBalance] = useState("")
     const [triggerFetch, setTriggerFetch] = useState(false);
@@ -140,7 +142,8 @@ function AdminDashboard() {
     <>
     <ToastContainer />
     <main className='w-full h-auto'>
-      <aside className='h-[100vh] font-poppins fixed left-0 transition-[0.4s]  font-medium text-[20px] w-[50%] md:w-[20%] bg-sky-400 flex flex-col gap-10 item-center'>
+      <aside className={`h-[100vh] pt-10 font-poppins fixed z-99 md:left-0 left-[100%] transition-[0.4s]  font-medium text-[20px] w-[50%] ${showNav ? `left-0` : `left-[100%]`} md:w-[20%] bg-sky-400 flex flex-col gap-10 item-center`}>
+        <CloseCircle onClick={()=>{setShowNav(false)}}/>
         <div className='h-[20%] mt-20 md:w-[50%] w-[80%] mx-auto flex flex-col justify-between'>
           <h1 className='text-white text-center cursor-pointer' onClick={()=>setShowPage("user")}>Users</h1>
           <h1 className='text-white text-center cursor-pointer' onClick={()=>setShowPage("transaction")}>Transactions</h1>
@@ -152,6 +155,7 @@ function AdminDashboard() {
      <section className='md:ml-[20%]'>
       <nav className='h-[60px] flex items-center w-[95%] mx-auto font-poppins'>
         <h1 className='text-[18px] font-bold text-[#7a7a7a]'>Welcome, Admin</h1>
+        <FiMenu size={24} onClick={()=>setShowNav(true)}/>
       </nav>
       <article className={`w-[95%] mx-auto mt-5 User ${showPage == 'user' ? `block` : `hidden`}`}>
         <h1 className='text-[50px] font-quicksand font-bold'>Users ({users.length})</h1>
