@@ -330,7 +330,7 @@ const AccountIndex = () => {
         <p className="text-white text-lg max-mdPhone:text-base">
           EliteOceanic Savings
         </p>
-        <div className="icons w-[50%] flex items-center justify-between">
+        <div className="icons w-[25%] flex items-center justify-between">
           <Link to={"./account-statement"}>
             <FontAwesomeIcon
               icon={faBell}
