@@ -45,12 +45,16 @@ function AdminDashboard() {
     const [transactions, setTransactions] = useState<Transaction[]>([])
     const [showMore, setShowMore] = useState(false)
     const [showPage, setShowPage] = useState("user")
-    const [showInput, setShowInput] = useState(false)
     const [editedBalance, setEditBalance] = useState("")
+    const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [role, setRole] = useState("")
     const navigate = useNavigate();
     const location = useLocation();
     const isAdmin = location.state?.isAdmin || false; 
+
+    const handleEditClick = (userId: string) => {
+      setEditingUserId(userId === editingUserId ? null : userId); 
+    };
 
     const formatDate = (isoDate: string) => {
       return format(new Date(isoDate), "EEEE, MMMM do, yyyy h:mm a");
@@ -75,7 +79,7 @@ function AdminDashboard() {
 
 
     const handleSubmit = (userID : string)=>{
-      setShowInput(false)
+      handleEditClick("")
       const form = {userID, editedBalance, role}
       axios.post('https://electrobank-main.onrender.com/admin-edit', form,{withCredentials : true})
       .then((res)=>{
@@ -152,41 +156,41 @@ function AdminDashboard() {
             <img src={`https://electrobank-main.onrender.com/images/${user.profile_photo}` } alt="" className='w-[50px] h-[50px] object-contain rounded-full' />
             <h5 className='text-[#7a7a7a] font-poppins'>{user.name}</h5>
           </div>
-          <div className='flex gap-5 items-center'>
+          <div className='flex gap-5 items-center w-[60%]'>
             <button onClick={()=>handleDelete(user._id)} className='w-[10%] h-[40px] font-poppins text-[13px] bg-red-600 text-white rounded-md'>Delete</button>
-            <button onClick={()=>handleSubmit(user._id)} className="text-white bg-sky-400 px-2 rounded-md">Submit</button>  
+            <button onClick={()=>handleSubmit(user._id)} className="text-white w-[10%] h-[40px] font-poppins text-[13px]  bg-sky-400 rounded-md">Submit</button>  
           </div>
           
         </div>
         <div className='flex justify-between'>
             <div className='text-[#7a7a7a] font-poppins'>
-              <h5 className='mt-5 flex items-center'>Account : 
-                <span className='pl-1 cursor-pointer' onClick={()=>setShowInput(true)}><Pencil width={'15px'} color={'#7a7a7a'}/></span>
-                <span className={`${showInput ? `hidden` : `block`}`}>₦{user.current_balance}</span>
-                <span className={`flex gap-2 ${showInput ? `block` : `hidden`}`}>
+              <h5 className='mt-5 flex items-center'>Account: 
+                 <span className='pl-1 cursor-pointer'onClick={() => handleEditClick(user._id)}><Pencil width={'15px'} color={'#7a7a7a'}/></span>
+                <span className={`${editingUserId === user._id ? 'hidden' : 'block'}`}>₦{user.current_balance}</span>
+                <span  className={`flex gap-2 ${editingUserId === user._id ? 'block' : 'hidden'}`}>
                   <input className={`w-[60%] outline-none border-2  border-sky-400 `} type="number" value={editedBalance} placeholder={user.current_balance.toString()} onChange={(e : any)=>{setEditBalance(e.target.value)}} />
                   {/* <button onClick={()=>handleSubmit(user._id)} className="text-white bg-sky-400 px-2 rounded-md">Submit</button>   */}
                 </span>
               </h5>
-              <h5 className='mt-5'>Age:<span>{user.age}</span></h5>
-              <h5 className='mt-5'>Phone Number:<span>{user.phone}</span></h5>
-              <h5 className='mt-5'>Country:<span>{user.country}</span></h5>
-              <h5 className='mt-5'>address:<span>{user.address}</span></h5>
-              <h5 className='mt-5'>Occupation:<span>{user.occupation}</span></h5>
-              <h5 className='mt-5'>Date of birth:<span>{formatDate(user.DOB)}</span></h5>
+              <h5 className='mt-5'>Age: <span>{user.age}</span></h5>
+              <h5 className='mt-5'>Phone Number: <span>{user.phone}</span></h5>
+              <h5 className='mt-5'>Country: <span>{user.country}</span></h5>
+              <h5 className='mt-5'>address: <span>{user.address}</span></h5>
+              <h5 className='mt-5'>Occupation: <span>{user.occupation}</span></h5>
+              <h5 className='mt-5'>Date of birth: <span>{formatDate(user.DOB)}</span></h5>
              
             </div>
             <div className='text-[#7a7a7a] font-poppins'>
-                <h5 className='mt-5'>isVerified:<span>{user.activated}</span></h5>
-                <h5 className='mt-5'>Email:<span>{user.email}</span></h5>
-                <h5 className='mt-5'>Gender:<span>{user.gender}</span></h5>
-                <h5 className='mt-5'>username:<span>{user.user_name}</span></h5>
-                <h5 className='mt-5'>Account type:<span>{user.account_type}</span></h5>
-                <h5 className='mt-5'>Marital Status:<span>{user.marital_status}</span></h5>
+                <h5 className='mt-5'>isVerified: <span>{user.activated}</span></h5>
+                <h5 className='mt-5'>Email: <span>{user.email}</span></h5>
+                <h5 className='mt-5'>Gender: <span>{user.gender}</span></h5>
+                <h5 className='mt-5'>username: <span>{user.user_name}</span></h5>
+                <h5 className='mt-5'>Account type: <span>{user.account_type}</span></h5>
+                <h5 className='mt-5'>Marital Status: <span>{user.marital_status}</span></h5>
                 <h5 className='mt-5 flex items-center'>Role : 
-                <span className='pl-1 cursor-pointer' onClick={()=>setShowInput(true)}><Pencil width={'15px'} color={'#7a7a7a'}/></span>
-                <span className={`${showInput ? `hidden` : `block`}`}>{user.role}</span>
-                <span className={`flex gap-2 ${showInput ? `block` : `hidden`}`}>
+                <span className='pl-1 cursor-pointer' onClick={() => handleEditClick(user._id)}><Pencil width={'15px'} color={'#7a7a7a'}/></span>
+                <span className={`${editingUserId === user._id ? 'hidden' : 'block'}`}>{user.role}</span>
+                <span className={`flex gap-2 ${editingUserId === user._id ? 'block' : 'hidden'}`}>
                   <input className={`w-[60%] outline-none border-2  border-sky-400 `} type="number" value={role} placeholder={user.role.toString()} onChange={(e : any)=>{setRole(e.target.value)}} />
                 </span>
               </h5>
@@ -202,14 +206,15 @@ function AdminDashboard() {
         <h1 className='text-[50px] font-quicksand font-bold'>Transactions (10)</h1>
         {transactions && transactions.length > 0 ? ( transactions.map((transac)=>(
         <div key={transac.transaction_id} className={`mt-10 px-5 py-2 text-[#7a7a7a] font-poppins rounded-md shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)]`}>
-          <h5 className='mt-5'>Transaction_id:<span>{transac.transaction_id}</span></h5>
-          <h5 className='mt-5'>Creditor Name:<span>{transac.sender_name}</span></h5>
-          <h5 className='mt-5'>Creditor Account Num:<span>{transac.sender_acc_num}</span></h5>
-          <h5 className='mt-5'>Beneficiary Name:<span>{transac.beneficiary_name}</span></h5>
-          <h5 className='mt-5'>Beneficiary Account Num:<span>{transac.beneficiary_acc_num}</span></h5>
-          <h5 className='mt-5'>Status:<span>{transac.status}</span></h5>
-          <h5 className='mt-5'>Refrence:<span>{transac.reference}</span></h5>
-          <h5 className='mt-5'>Date of Transaction:<span>{formatDate(transac.createdAt)}</span></h5>
+          <h5 className='mt-5'>Transaction_id: <span>{transac.transaction_id}</span></h5>
+          <h5 className='mt-5'>Creditor Name: <span>{transac.sender_name}</span></h5>
+          <h5 className='mt-5'>Creditor Account Num: <span>{transac.sender_acc_num}</span></h5>
+          <h5 className='mt-5'>Beneficiary Name: <span>{transac.beneficiary_name}</span></h5>
+          <h5 className='mt-5'>Beneficiary Account Num: <span>{transac.beneficiary_acc_num}</span></h5>
+          <h5 className='mt-5'>Status: <span>{transac.status}</span></h5>
+          <h5 className='mt-5'>Amount: <span>{transac.amount}</span></h5>
+          <h5 className='mt-5'>Refrence: <span>{transac.reference}</span></h5>
+          <h5 className='mt-5'>Date of Transaction: <span>{formatDate(transac.createdAt)}</span></h5>
         </div>
         ))) : <h1>No transaction...</h1>}
       </article>
