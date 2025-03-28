@@ -75,7 +75,6 @@ function AdminDashboard() {
 
 
     const handleSubmit = (userID : string)=>{
-      e.preventDefault();
       setShowInput(false)
       const form = {userID, editedBalance, role}
       axios.post('https://electrobank-main.onrender.com/admin-edit', form,{withCredentials : true})
