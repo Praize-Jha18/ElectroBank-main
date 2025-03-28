@@ -77,6 +77,9 @@ const login = async (req : Request, res: Response): Promise<void> =>{
     console.log(email, password)
     try {
         const user = await User.login(email, password);
+        if(!user.activated){
+            res.status(402).json({deactivated : true})
+        }
         const token = createToken(String(user._id))
         res.cookie("jwt", token,{httpOnly : true, maxAge : maxAge * 1000, sameSite: "none", secure: true })
         res.status(201).json({user});

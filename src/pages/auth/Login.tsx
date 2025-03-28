@@ -29,24 +29,25 @@ const Login = () => {
         if(user === 'admin'){
           navigate("/admin", { state: { isAdmin: true }})
           toast.success("Logged in successfully")
-        }else{
+        }
           navigate("/account");
           toast.dismiss(toastId)
-        }
       }
     } catch (err: any) {
       // Handle backend error message
       console.log(err)
       console.error(err.response.data.error);
+
+      if (err.response.data.deactivate) {
+        navigate('/auth/login');
+        toast.error("Account Deactivated, visit support center")
+      }
     
     // Extract error message from backend response
     const errorMessage = err.response?.data?.error || "Something went wrong, please try again.";
     
     toast.error(errorMessage);
     }
-    
-
-    
   }
   return (
 

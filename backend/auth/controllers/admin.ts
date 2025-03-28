@@ -56,4 +56,21 @@ const deleteUser = async (req: Request, res : Response)=>{
     }
 }
 
-export default {allUsers, editUser, deleteUser}
+const deactivate = async (req: Request, res : Response)=>{
+    try{
+        const {userID} = req.body
+        const user = await User.findById(userID)
+        if(user){
+            user.activated = false
+            await user.save()
+            res.status(200).json({ message: `${user.name} account deactivated` });
+        }else{
+            res.status(404).json({ message: "User not found" });
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+export default {allUsers, editUser, deleteUser, deactivate}

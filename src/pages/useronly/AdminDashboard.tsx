@@ -121,6 +121,25 @@ function AdminDashboard() {
       }
     }
 
+    const handleDeactivate = async (userID: any)=>{
+      try {
+        const res = await axios.post(
+          'https://electrobank-main.onrender.com/deactivate',
+          { userID }, 
+          { withCredentials: true }
+        );
+    
+        console.log(res.data.message);
+        if (res.status === 200) {
+          toast.success(res.data.message);
+        } else {
+          toast.error(res.data.message);
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error("Failed to deactivate account");
+      }
+    }
     const logout = async () => {
       try {
         const response = await axios.get("https://electrobank-main.onrender.com/logout", {
@@ -142,7 +161,7 @@ function AdminDashboard() {
     <>
     <ToastContainer />
     <main className='w-full h-auto'>
-      <aside className={`h-[100vh] pt-10 font-poppins fixed z-99 md:left-0 left-[100%] transition-[0.4s]  font-medium text-[20px] w-[50%] ${showNav ? `left-0` : `left-[100%]`} md:w-[20%] bg-sky-400 flex flex-col gap-10 item-center`}>
+      <aside className={`h-[100vh] pt-10 font-poppins fixed z-50 md:left-0 left-[100%] transition-all duration-400 font-medium text-[20px] w-[50%] ${showNav ? `left-0` : `left-full`} md:w-[20%] bg-sky-400 flex flex-col gap-10 item-center`}>
         <div className='w-[60%] mx-auto text-center '>
         <CloseCircle width={30} color={`#FFFFFF`} onClick={()=>{setShowNav(false)}}/>
         </div>
@@ -158,7 +177,7 @@ function AdminDashboard() {
      <section className='md:ml-[20%]'>
       <nav className='h-[60px] flex items-center w-[95%] justify-between mx-auto font-poppins'>
         <h1 className='text-[18px] font-bold text-[#7a7a7a]'>Welcome, Admin</h1>
-        <FiMenu size={24} className={`md:hidden block text-sky-400`} onClick={()=>setShowNav(true)}/>
+        <FiMenu size={24} className={`md:hidden block text-sky-400 cursor-pointer`} onClick={()=>setShowNav(true)}/>
       </nav>
       <article className={`w-[95%] mx-auto mt-5 User ${showPage == 'user' ? `block` : `hidden`}`}>
         <h1 className='text-[50px] font-quicksand font-bold'>Users ({users.length})</h1>
@@ -169,9 +188,10 @@ function AdminDashboard() {
             <img src={`https://electrobank-main.onrender.com/images/${user.profile_photo}` } alt="" className='w-[50px] h-[50px] object-contain rounded-full' />
             <h5 className='text-[#7a7a7a] font-poppins'>{user.name}</h5>
           </div>
-          <div className='flex gap-5 items-center w-[60%] justify-end pr-2'>
+          <div className='flex md:gap-5 gap-2  items-center md:w-[80%] w-[80%] justify-end pr-2'>
             <button onClick={()=>handleDelete(user._id)} className='w-[10%] h-[40px] font-poppins text-[13px] bg-red-600 text-white rounded-md'>Delete</button>
             <button onClick={()=>handleSubmit(user._id)} className="text-white w-[10%] h-[40px] font-poppins text-[13px]  bg-sky-400 rounded-md">Submit</button>  
+            <button onClick={()=>handleDeactivate(user._id)}  className='bg-[#7a7a7a] text-white w-[10%] h-[40px] rounded-md font-poppins'>Deactivate</button>
           </div>
           
         </div>
