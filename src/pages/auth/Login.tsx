@@ -40,9 +40,10 @@ const Login = () => {
       console.log(err)
       console.error(err.response.data.error);
 
-      if (err.response.data.deactivate) {
-        navigate('/auth/login');
-        toast.error("Account Deactivated, visit support center")
+      if (err.response.status === 402 && err.response.data?.deactivate) {
+        navigate("/auth/login");
+        toast.error("Account Deactivated, visit support center");
+        return;
       }
     
     // Extract error message from backend response

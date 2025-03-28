@@ -132,6 +132,7 @@ function AdminDashboard() {
         console.log(res.data.message);
         if (res.status === 200) {
           toast.success(res.data.message);
+          setTriggerFetch(prev => !prev); 
         } else {
           toast.error(res.data.message);
         }
@@ -191,7 +192,7 @@ function AdminDashboard() {
           <div className='flex md:gap-5 gap-2  items-center md:w-[80%] w-[80%] justify-end pr-2'>
             <button onClick={()=>handleDelete(user._id)} className='w-[10%] h-[40px] font-poppins text-[13px] bg-red-600 text-white rounded-md'>Delete</button>
             <button onClick={()=>handleSubmit(user._id)} className="text-white w-[10%] h-[40px] font-poppins text-[13px]  bg-sky-400 rounded-md">Submit</button>  
-            <button onClick={()=>handleDeactivate(user._id)}  className={`bg-[#7a7a7a] text-white ${user.role == 'admin' ? `hidden` : `block`} w-[10%] h-[40px] rounded-md font-poppins`}>Deactivate</button>
+            <button onClick={()=>handleDeactivate(user._id)}  className={`bg-[#7a7a7a] p-2 text-white ${user.role == 'admin' ? `hidden` : `block`} w-[10%] h-[40px] rounded-md font-poppins`}>Deactivate</button>
           </div>
           
         </div>
