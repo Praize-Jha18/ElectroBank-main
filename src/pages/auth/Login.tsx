@@ -29,9 +29,11 @@ const Login = () => {
         if(user === 'admin'){
           navigate("/admin", { state: { isAdmin: true }})
           toast.success("Logged in successfully")
-        }
+        }else{
           navigate("/account");
           toast.dismiss(toastId)
+        }
+       
       }
     } catch (err: any) {
       // Handle backend error message
