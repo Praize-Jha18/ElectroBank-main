@@ -330,7 +330,7 @@ const AccountIndex = () => {
         <p className="text-white text-lg max-mdPhone:text-base">
           EliteOceanic Savings
         </p>
-        <div className="icons w-[60%]">
+        <div className="icons w-[50%] flex items-center justify-between">
           <Link to={"./account-statement"}>
             <FontAwesomeIcon
               icon={faBell}
@@ -339,7 +339,7 @@ const AccountIndex = () => {
           </Link>
          
           <Link to={"./profile"}>
-            {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[5%] w-[5%] object-contain rounded-lg" /> : <FontAwesomeIcon
+            {image ? <img src={`https://electrobank-main.onrender.com/images/${image}`} alt="Avatar" className="h-[50px] w-[50px] object-contain rounded-full" /> : <FontAwesomeIcon
               icon={faUser}
               className="text-[#27173E] h-6 pl-6  max-mdPhone:pl-5 max-mdPhone:h-5"
             />}
