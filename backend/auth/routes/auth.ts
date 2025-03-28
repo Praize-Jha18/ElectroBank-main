@@ -31,6 +31,8 @@ router.post('/support',requireAuth, transacHistory.support)
 
 //=============== Admin Route
 router.get('/admin',adminAuth, admin.allUsers)
+router.post('/admin-edit', adminAuth ,admin.editUser)
+router.delete('/admin-delete', admin.deleteUser)
 
 
 
