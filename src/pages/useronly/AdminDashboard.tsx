@@ -85,6 +85,8 @@ function AdminDashboard() {
       .then((res)=>{
         console.log(res.data.message)
         toast.success(res.data.message)
+        setEditBalance('');
+      setRole('');
       })
       .catch((err)=>{
         const message = err.response?.data?.message || "Something went wrong"
