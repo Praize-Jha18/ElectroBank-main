@@ -154,7 +154,7 @@ function AdminDashboard() {
         <h1 className='text-[18px] font-bold text-[#7a7a7a]'>Welcome, Admin</h1>
       </nav>
       <article className={`w-[95%] mx-auto mt-5 User ${showPage == 'user' ? `block` : `hidden`}`}>
-        <h1 className='text-[50px] font-quicksand font-bold'>Users (users.length)</h1>
+        <h1 className='text-[50px] font-quicksand font-bold'>Users ({users.length})</h1>
         {users && users.length > 0 ? ( users.map((user)=> (
         <div key={user._id} className={`user-box w-[100%] relative px-5 py-2 transition-[0.4s] overflow-hidden mt-10 ${showMore ? `h-[450px]` : `h-[250px]`} rounded-md shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)]`}>
         <div className='flex items-center justify-between'>
@@ -209,7 +209,7 @@ function AdminDashboard() {
         </div>  )))  : <h1>No User...</h1>}
       </article>
       <article className={`Transaction w-[95%] ${showPage == 'transaction' ? `block` : `hidden`} mx-auto mt-5`}>
-        <h1 className='text-[50px] font-quicksand font-bold'>Transactions (transactions.length)</h1>
+        <h1 className='text-[50px] font-quicksand font-bold'>Transactions ({transactions.length})</h1>
         {transactions && transactions.length > 0 ? ( transactions.map((transac)=>(
         <div key={transac.transaction_id} className={`mt-10 px-5 py-2 text-[#7a7a7a] font-poppins rounded-md shadow-[0px_7px_29px_0px_rgba(100,100,111,0.2)]`}>
           <h5 className='mt-5'>Transaction_id: <span>{transac.transaction_id}</span></h5>
