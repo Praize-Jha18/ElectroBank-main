@@ -46,6 +46,7 @@ function AdminDashboard() {
     const [showMore, setShowMore] = useState(false)
     const [showPage, setShowPage] = useState("user")
     const [editedBalance, setEditBalance] = useState("")
+    const [triggerFetch, setTriggerFetch] = useState(false);
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [role, setRole] = useState("")
     const navigate = useNavigate();
@@ -75,7 +76,7 @@ function AdminDashboard() {
           console.error("Admin access error:", error.response?.data || error);
           navigate("/auth/login");
       });
-    },[])
+    },[triggerFetch])
 
 
     const handleSubmit = (userID : string)=>{
@@ -86,7 +87,9 @@ function AdminDashboard() {
         console.log(res.data.message)
         toast.success(res.data.message)
         setEditBalance('');
-      setRole('');
+        setRole('');
+
+        setTriggerFetch(prev => !prev); 
       })
       .catch((err)=>{
         const message = err.response?.data?.message || "Something went wrong"
@@ -158,7 +161,7 @@ function AdminDashboard() {
             <img src={`https://electrobank-main.onrender.com/images/${user.profile_photo}` } alt="" className='w-[50px] h-[50px] object-contain rounded-full' />
             <h5 className='text-[#7a7a7a] font-poppins'>{user.name}</h5>
           </div>
-          <div className='flex gap-5 items-center w-[60%]'>
+          <div className='flex gap-5 items-center w-[60%] justify-end pr-2'>
             <button onClick={()=>handleDelete(user._id)} className='w-[10%] h-[40px] font-poppins text-[13px] bg-red-600 text-white rounded-md'>Delete</button>
             <button onClick={()=>handleSubmit(user._id)} className="text-white w-[10%] h-[40px] font-poppins text-[13px]  bg-sky-400 rounded-md">Submit</button>  
           </div>
@@ -183,7 +186,7 @@ function AdminDashboard() {
              
             </div>
             <div className='text-[#7a7a7a] font-poppins'>
-                <h5 className='mt-5'>isVerified: <span>{user.activated}</span></h5>
+                <h5 className='mt-5'>isVerified: {user.activated ? <span>Yes</span> : <span>No</span> } </h5>
                 <h5 className='mt-5'>Email: <span>{user.email}</span></h5>
                 <h5 className='mt-5'>Gender: <span>{user.gender}</span></h5>
                 <h5 className='mt-5'>username: <span>{user.user_name}</span></h5>
