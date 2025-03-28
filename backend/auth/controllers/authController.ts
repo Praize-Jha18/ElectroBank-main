@@ -87,7 +87,6 @@ const login = async (req : Request, res: Response): Promise<void> =>{
     catch(err: any){
         console.error(err.message); // Log error message
 
-        // Determine the appropriate status code based on the error
         let statusCode = 500;
         let errorMessage = "An unexpected error occurred";
 

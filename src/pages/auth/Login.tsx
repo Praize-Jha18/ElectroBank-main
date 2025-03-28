@@ -36,20 +36,22 @@ const Login = () => {
        
       }
     } catch (err: any) {
-      // Handle backend error message
-      console.log(err)
-      console.error(err.response.data.error);
+      console.log(err);
 
-      if (err.response.status === 402 && err.response.data?.deactivate) {
-        navigate("/auth/login");
-        toast.error("Account Deactivated, visit support center");
-        return;
+      if (err.response) {
+        console.error(err.response.data?.error || "Unknown server error");
+
+        if (err.response.status === 402 && err.response.data?.deactivate) {
+          navigate("/auth/login");
+          toast.error("Account Deactivated, visit support center");
+          return;
+        }
+        const errorMessage = err.response.data?.error || "Something went wrong, please try again.";
+        toast.error(errorMessage);
+      } else {
+        console.error("No response from server");
+        toast.error("Server unreachable. Check your connection.");
       }
-    
-    // Extract error message from backend response
-    const errorMessage = err.response?.data?.error || "Something went wrong, please try again.";
-    
-    toast.error(errorMessage);
     }
   }
   return (
