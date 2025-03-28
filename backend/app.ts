@@ -45,7 +45,7 @@ app.use(
 app.use(authRoute)
 //=============================== ROUTES
 // Apply CORS middleware to each route individually
-// app.use("/auth", cors(), authRoute);
+app.use("/auth", cors(), authRoute);
 
 //=============================== DATABASE CONFIG
 const port = 3000;
