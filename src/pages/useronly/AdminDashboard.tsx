@@ -141,6 +141,27 @@ function AdminDashboard() {
         toast.error("Failed to deactivate account");
       }
     }
+
+    const handleActivate = async (userID: any)=>{
+      try {
+        const res = await axios.post(
+          'https://electrobank-main.onrender.com/activate',
+          { userID }, 
+          { withCredentials: true }
+        );
+    
+        console.log(res.data.message);
+        if (res.status === 200) {
+          toast.success(res.data.message);
+          setTriggerFetch(prev => !prev); 
+        } else {
+          toast.error(res.data.message);
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error("Failed to deactivate account");
+      }
+    }
     const logout = async () => {
       try {
         const response = await axios.get("https://electrobank-main.onrender.com/logout", {
@@ -163,7 +184,7 @@ function AdminDashboard() {
     <ToastContainer />
     <main className='w-full h-auto'>
       <aside className={`h-[100vh] pt-10 font-poppins fixed z-50 md:left-0 left-[100%] transition-all duration-400 font-medium text-[20px] w-[50%] ${showNav ? `left-0` : `left-full`} md:w-[20%] bg-sky-400 flex flex-col gap-10 item-center`}>
-        <div className='w-[60%] mx-auto text-center '>
+        <div className='w-[60%] mx-auto text-center flex justify-center items-center '>
         <CloseCircle width={30} color={`#FFFFFF`} onClick={()=>{setShowNav(false)}}/>
         </div>
         
@@ -189,10 +210,11 @@ function AdminDashboard() {
             <img src={`https://electrobank-main.onrender.com/images/${user.profile_photo}` } alt="" className='w-[50px] h-[50px] object-contain rounded-full' />
             <h5 className='text-[#7a7a7a] font-poppins'>{user.name}</h5>
           </div>
-          <div className='flex md:gap-5 gap-2  items-center md:w-[80%] w-[80%] justify-end pr-2'>
+          <div className='flex md:gap-2 gap-2  items-center md:w-[100%] w-[80%] justify-end pr-2'>
             <button onClick={()=>handleDelete(user._id)} className='w-[10%] h-[40px] font-poppins text-[13px] bg-red-600 text-white rounded-md'>Delete</button>
             <button onClick={()=>handleSubmit(user._id)} className="text-white w-[10%] h-[40px] font-poppins text-[13px]  bg-sky-400 rounded-md">Submit</button>  
-            <button onClick={()=>handleDeactivate(user._id)}  className={`bg-[#7a7a7a] p-2 text-white ${user.role == 'admin' ? `hidden` : `block`} w-[10%] h-[40px] rounded-md font-poppins`}>Deactivate</button>
+            <button onClick={()=>handleDeactivate(user._id)}  className={`bg-[#7a7a7a] p-2 text-white text-[13px]  ${user.role == 'admin' ? `hidden` : `block`} w-[10%] h-[40px] rounded-md font-poppins`}>Deactivate</button>
+            <button onClick={()=>handleActivate(user._id)}  className={`bg-[#7a7a7a] p-2 text-white text-[13px]  ${user.role == 'admin' ? `hidden` : `block`} w-[10%] h-[40px] rounded-md font-poppins`}>Activate</button>
           </div>
           
         </div>
